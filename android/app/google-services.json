@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "696555057769",
+    "project_id": "courier-8637f",
+    "storage_bucket": "courier-8637f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:696555057769:android:13fa3d05f669fc7602a8f8",
+        "android_client_info": {
+          "package_name": "com.prapadtech.courier.customerservice"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2lXnXLx2IFT5LoGQATs8VefD-LhYyobE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:696555057769:android:7d965e5059bb801402a8f8",
+        "android_client_info": {
+          "package_name": "com.prapadtech.courier.delivery"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2lXnXLx2IFT5LoGQATs8VefD-LhYyobE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:696555057769:android:515985121fd9141302a8f8",
+        "android_client_info": {
+          "package_name": "com.prapadtech.courier.merchant"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2lXnXLx2IFT5LoGQATs8VefD-LhYyobE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
