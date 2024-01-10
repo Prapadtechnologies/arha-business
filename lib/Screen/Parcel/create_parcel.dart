@@ -155,12 +155,10 @@ class _CreateParcelState extends State<CreateParcel> {
                                   parcel.pickupLate = newValue.merchantLat.toString();
                                   parcel.pickupLong = newValue.merchantLong.toString();
                                   parcel.merchantID = newValue.merchantId.toString();
-
                                 });
                               },
                             ),
                           )
-
                         );
                       },
                     ),

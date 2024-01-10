@@ -61,10 +61,10 @@ class _DashBoardState extends State<DashBoard> {
   ];
 
   List<Color> colorList = [
-    const Color(0xFFEFFBF8),
-    const Color(0xFFFDF9EE),
-    const Color(0xFFFBEBF1),
-    const Color(0xFFEFF5FA),
+    const Color(0xFFfafafb/*0xFFEFFBF8*/),
+    const Color(0xFFfafafb/*0xFFFDF9EE*/),
+    const Color(0xFFfafafb/*0xFFFBEBF1*/),
+    const Color(0xFFfafafb/*0xFFEFF5FA*/),
   ];
   List<String> imageList = [
     Images.banner1,
@@ -659,13 +659,11 @@ class _DashBoardState extends State<DashBoard> {
                             GridView.count(
                               crossAxisCount: 2,
                               crossAxisSpacing: 10.0,
-                              childAspectRatio: 1,
+                              childAspectRatio: 1.1,
                               mainAxisSpacing: 10.0,
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
-                              children: List.generate(
-                                4,
-                                    (i) {
+                              children: List.generate(4, (i) {
                                   return
                                     Card(
                                       color: colorList[i],
@@ -683,20 +681,20 @@ class _DashBoardState extends State<DashBoard> {
                                             Icon(
                                               iconList[i],
                                               size: 40,
-                                              color: kTitleColor,
+                                              color: kMainColor/*kTitleColor*/,
                                             ),
                                             const SizedBox(height: 10.0),
                                             Text(
                                               reportList[i],
                                               style: kTextStyle.copyWith(
-                                                  color: kTitleColor,
+                                                  color: kMainColor/*kTitleColor*/,
                                                   fontWeight: FontWeight.bold),
                                             ),
                                             const SizedBox(height: 10.0),
                                             Text(
                                               i == 0? dashboard.dashboardData.tParcel.toString(): i==1?dashboard.dashboardData.tDelivered.toString():i==2?dashboard.dashboardData.tReturn.toString():i==3? "${dashboard.dashboardData.tParcel! - (dashboard.dashboardData.tDelivered! + dashboard.dashboardData.tReturn!)}" :'0',
                                               style: kTextStyle.copyWith(
-                                                  color: kTitleColor,
+                                                  color: kMainColor/*kTitleColor*/,
                                                   fontSize: 20.0,
                                                   fontWeight: FontWeight.bold),
                                             ),
@@ -726,7 +724,8 @@ class _DashBoardState extends State<DashBoard> {
                                           color: kGreyTextColor.withOpacity(0.2),
                                         ),
                                       ),
-*//*
+*/
+/*
                                       child: Column(
                                         children: [
                                           Row(
@@ -779,7 +778,8 @@ class _DashBoardState extends State<DashBoard> {
                                           ),
                                         ],
                                       ),
-*//*
+*/
+/*
                                     ),
                                     Container(
                                       padding: const EdgeInsets.all(10.0),
