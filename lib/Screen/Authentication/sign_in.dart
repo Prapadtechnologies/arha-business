@@ -40,37 +40,50 @@ class _SignInState extends State<SignIn> {
         resizeToAvoidBottomInset: false,
         backgroundColor: kMainColor,
         body: Stack(children: [
-        Center(
-        child:
-        Column(
+         Center(child:
+          Column(
           children: [
-            const SizedBox(
-              height: 40,
+            const SizedBox(height: 80,
             ),
-             Center(
-              child:  Container(
-                margin: EdgeInsets.only(right: 30),
-                height: 120,
+            /*Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(height: 100,
+                ),
+                Container(margin: EdgeInsetsDirectional.only(top: 100),),
+
+                Image.asset(
+                  'assets/images/logo.png',
+                  width: 200,
+                  height: 100,
+                ),
+              ],
+            ),*/
+           /* Positioned(
+              left: 10,
+              top: 10,
+              bottom: 10,
+              child: Image.asset(
+                'assets/images/logo.png',
+              ),
+            ),*/
+           /*Container(
+                padding: EdgeInsets.only(top: 100),
                 decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(Images.appLogo),
-                    fit: BoxFit.contain,
-                  ),
+                image: DecorationImage(
+                  image: AssetImage(Images.appLogo),
+                  fit: BoxFit.contain,
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 5.0,
-            ),
-            Text(
-              'please_enter_your_user_information'.tr,
-              style: kTextStyle.copyWith(color: Colors.white, fontSize: 18.0),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(
-              height: 30,
-            ),
+              ),*/
+              //Image.asset('assets/logo.png'),
+           // ),
+
+
+
+
             Expanded(
+
               child: Container(
                 decoration: const BoxDecoration(
                   color: Colors.white,
@@ -78,15 +91,27 @@ class _SignInState extends State<SignIn> {
                     topLeft: Radius.circular(30.0),
                     topRight: Radius.circular(30.0),
                   ),
+
                 ),
+
                 child: Padding(
-                  padding: const EdgeInsets.all(10.0),
+                  padding: const EdgeInsets.all(5.0),
+
                   child:  Form(
                     key: _formKey,
                     child:
-                  Column(
+                   Column(
                     children: [
-                      const SizedBox(height: 20.0),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/images/logo.png',
+                            width: 400,
+                            height: 150,
+                          ),
+                        ],
+                      ),
                       AppTextField(
                         showCursor: true,
                         controller: _emailController,
@@ -101,7 +126,7 @@ class _SignInState extends State<SignIn> {
                         decoration: kInputDecoration.copyWith(
                           labelText: 'email_mobile'.tr,
                           labelStyle: kTextStyle.copyWith(color: kTitleColor),
-                          hintText: 'courier@gmail.com',
+                          hintText: 'aa@gmail.com',
                           hintStyle: kTextStyle.copyWith(color: kGreyTextColor),
                           suffixIcon:
                               const Icon(Icons.mail, color: kGreyTextColor),

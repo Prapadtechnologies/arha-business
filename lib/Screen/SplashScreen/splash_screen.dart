@@ -67,7 +67,7 @@ class _SplashScreenState extends State<SplashScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children:  [
           Center(
-            child: Image(width: 200,height: 200,
+            child: Image(width: 600,height: 600,
               image: AssetImage(Images.appLogo),
             ),
           ),

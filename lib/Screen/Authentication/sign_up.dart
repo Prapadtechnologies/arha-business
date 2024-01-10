@@ -46,9 +46,9 @@ class _SignUpState extends State<SignUp> {
         child: Column(
           children: [
             const SizedBox(
-              height: 40,
+              height: 100,
             ),
-            Container(
+           /* Container(
               margin: EdgeInsets.only(right: 30),
               height: 120,
               decoration: BoxDecoration(
@@ -57,7 +57,7 @@ class _SignUpState extends State<SignUp> {
                   fit: BoxFit.contain,
                 ),
               ),
-            ),
+            ),*/
 
             Text(
               'registration_form'.tr,
@@ -66,11 +66,11 @@ class _SignUpState extends State<SignUp> {
                   fontWeight: FontWeight.bold,
                   fontSize: 20.0),
             ),
-            const SizedBox(height: 5.0),
+           /* const SizedBox(height: 5.0),
             Text(
               'please_enter_your_user_information'.tr,
               style: kTextStyle.copyWith(color: Colors.white),
-            ),
+            ),*/
             const SizedBox(
               height: 30,
             ),
@@ -89,9 +89,19 @@ class _SignUpState extends State<SignUp> {
                   key: _formKey,
                   child:
                       Column(
-                        mainAxisSize: MainAxisSize.min,
+                       mainAxisSize: MainAxisSize.min,
                         children: [
-                          const SizedBox(height: 20),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                'assets/images/logo.png',
+                                width: 380,
+                                height: 150,
+                              ),
+                            ],
+                          ),
+                       /*   const SizedBox(height: 20),
                           AppTextField(
                             showCursor: true,
                             controller: auth.businessNameController,
@@ -109,8 +119,7 @@ class _SignUpState extends State<SignUp> {
                               hintText: 'wecourier'.tr,
                               hintStyle: kTextStyle.copyWith(color: kGreyTextColor),
                             ),
-                          ),
-                          const SizedBox(height: 20),
+                          ),*/
                           AppTextField(
                             showCursor: true,
                             controller: auth.firstNameController,
@@ -125,7 +134,7 @@ class _SignUpState extends State<SignUp> {
                             decoration: kInputDecoration.copyWith(
                               labelText: 'first_name'.tr,
                               labelStyle: kTextStyle.copyWith(color: kTitleColor),
-                              hintText: 'we'.tr,
+                              hintText: 'enter your first name'.tr,
                               hintStyle: kTextStyle.copyWith(color: kGreyTextColor),
                             ),
                           ),
@@ -144,7 +153,7 @@ class _SignUpState extends State<SignUp> {
                             decoration: kInputDecoration.copyWith(
                               labelText: 'last_name'.tr,
                               labelStyle: kTextStyle.copyWith(color: kTitleColor),
-                              hintText: 'courier'.tr,
+                              hintText: 'enter your last name'.tr,
                               hintStyle: kTextStyle.copyWith(color: kGreyTextColor),
                             ),
                           ),
@@ -265,7 +274,7 @@ class _SignUpState extends State<SignUp> {
                                       style: kTextStyle.copyWith(color: kTitleColor),
                                       children: [
                                         TextSpan(
-                                          text: 'e_courier'.tr,
+                                          text: ' Arha express '.tr,
                                           style: kTextStyle.copyWith(
                                               color: kGreyTextColor),
                                         ),
