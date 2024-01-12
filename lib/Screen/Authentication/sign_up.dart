@@ -96,7 +96,7 @@ class _SignUpState extends State<SignUp> {
                             children: [
                               Image.asset(
                                 'assets/images/logo.png',
-                                width: 380,
+                                width: 350,
                                 height: 150,
                               ),
                             ],

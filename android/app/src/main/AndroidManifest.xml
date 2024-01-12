@@ -9,7 +9,8 @@
     <application
         android:label="Arha Express"
         android:name="${applicationName}"
-        android:icon="@mipmap/logo_3">
+        android:icon="@mipmap/logo_6">
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
