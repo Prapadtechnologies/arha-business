@@ -647,7 +647,7 @@ class _DashBoardState extends State<DashBoard> {
                                     const BalanceDetails().launch(context);
                                   });
                                 }),*/
-                            const SizedBox(height: 20),
+                            const SizedBox(height: 10),
                             Text(
                               'Customer Dashboard'.tr,
                               style: kTextStyle.copyWith(
@@ -705,8 +705,8 @@ class _DashBoardState extends State<DashBoard> {
                                 },
                               ),
                             ),
-                            const SizedBox(height: 20),
-/*
+                            /*       const SizedBox(height: 20),
+
                             Card(
                               elevation: 10,
                               child: Container(

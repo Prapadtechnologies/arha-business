@@ -566,11 +566,12 @@ class _ParcelPageState extends State<ParcelPage> {
         elevation: 0.0,
         iconTheme: const IconThemeData(color: kBgColor),
       ),
+
       body: GetBuilder<ParcelController>(
           init: ParcelController(),
           builder: (parcel) => Container(
-              padding: const EdgeInsets.all(10.0),
-              margin: EdgeInsets.only(top: 20),
+              padding: const EdgeInsets.all(8.0),
+              margin: EdgeInsets.only(top: 8),
               height: MediaQuery.of(context).size.height,
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(

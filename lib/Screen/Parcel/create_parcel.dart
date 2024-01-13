@@ -229,7 +229,7 @@ class _CreateParcelState extends State<CreateParcel> {
                       hintStyle: kTextStyle.copyWith(color: kGreyTextColor),
                     ),
                   ),
-                  const SizedBox(height: 20.0),
+                 /* const SizedBox(height: 20.0),
                   AppTextField(
                     controller: parcel.cashCollectionController,
                     validator: (value) {
@@ -286,7 +286,8 @@ class _CreateParcelState extends State<CreateParcel> {
                       hintText: 'enter_invoice_number'.tr,
                       hintStyle: kTextStyle.copyWith(color: kGreyTextColor),
                     ),
-                  ),
+                  ),*/
+
                   const SizedBox(height: 20.0),
                   parcel.deliveryChargesList.isEmpty?SizedBox():   SizedBox(
                     height: 60.0,

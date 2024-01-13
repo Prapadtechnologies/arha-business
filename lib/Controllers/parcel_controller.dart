@@ -199,9 +199,9 @@ class ParcelController extends GetxController {
       'pickup_address': pickupAddressController.text.toString(),
       'pickup_lat': pickupLate,
       'pickup_long': pickupLong,
-      'invoice_no': invoiceController.text.toString(),
-      'cash_collection': cashCollectionController.text.toString(),
-      'selling_price': sellingPriceController.text.toString(),
+      'invoice_no': "0"/*invoiceController.text.toString()*/,
+      'cash_collection': "0",/*cashCollectionController.text.toString(),*/
+      'selling_price': "0"/*sellingPriceController.text.toString()*/,
       'category_id': deliveryChargesValue.categoryId.toString(),
       'delivery_type_id': deliveryTypID == 'Next Day'? 1: deliveryTypID == 'Same Day'?2: deliveryTypID == 'Sub City'?3: deliveryTypID == 'Outside City'?4:'',
       'customer_name': customerController.text.toString(),
@@ -330,7 +330,7 @@ class ParcelController extends GetxController {
           merchantCodCharge = 0;
       }
       packagingAmount = double.parse(packagingPrice.toString());
-       totalCashCollection          =  double.parse(cashCollectionController.text.toString());
+       totalCashCollection          =  double.parse("0.0"/*cashCollectionController.text.toString()*/);
        codChargeAmount              =  percentage(totalCashCollection, merchantCodCharge);
        if(isLiquidChecked){
          totalDeliveryChargeAmount    = (deliveryChargeAmount+codChargeAmount+fragileLiquidAmount+packagingAmount);
