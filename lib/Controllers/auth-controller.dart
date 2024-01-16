@@ -33,13 +33,9 @@ class AuthController extends GetxController {
   TextEditingController addressController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController usernameController = TextEditingController();
-  TextEditingController passwordConfirmationController =
-      TextEditingController();
+  TextEditingController passwordConfirmationController = TextEditingController();
   bool obscureText = true;
   bool loader = false;
-
-
-
 
   changeVisibility() {
     obscureText = !obscureText;
@@ -157,8 +153,7 @@ class AuthController extends GetxController {
       };
       String jsonBody = json.encode(body);
       print(jsonBody);
-      server
-          .postRequest(endPoint: APIList.register, body: jsonBody)
+      server.postRequest(endPoint: APIList.register, body: jsonBody)
           .then((response) {
         if (response != null && response.statusCode == 200) {
           final jsonResponse = json.decode(response.body);

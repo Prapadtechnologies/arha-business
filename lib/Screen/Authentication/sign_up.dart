@@ -1,4 +1,9 @@
+
+import 'dart:js_util';
+import 'dart:html';
 import 'package:flutter/services.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 
 import '/Controllers/global-controller.dart';
 import '/Models/hubs_model.dart';
@@ -21,28 +26,56 @@ class SignUp extends StatefulWidget {
 
   @override
   State<SignUp> createState() => _SignUpState();
+
 }
 
 class _SignUpState extends State<SignUp> {
   bool isChecked = true;
   final _formKey = GlobalKey<FormState>();
- int hub = 1;
+  int hub = 1;
   AuthController authController = AuthController();
   GlobalController globalController = Get.put(GlobalController());
+  String address ='';
+  late TextEditingController _controller;
+
+  getLocation()async{
+    LocationPermission permission  = await Geolocator.checkPermission();
+    if(permission == LocationPermission.denied || permission == LocationPermission.deniedForever){
+      log("Location denied");
+      LocationPermission ask = await Geolocator.requestPermission();
+    }else{
+      Position currentposition = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
+      log("Lat ==> ${currentposition.latitude.toString()}");
+      log("Long ==> ${currentposition.longitude.toString()}");
+      List<Placemark> newPlace = await placemarkFromCoordinates(currentposition.latitude , currentposition.longitude);
+      Placemark placeMark  = newPlace[0];
+      String? name = placeMark.name;
+      String? subLocality = placeMark.subLocality;
+      String? locality = placeMark.locality;
+      String? administrativeArea = placeMark.administrativeArea;
+      String? postalCode = placeMark.postalCode;
+      String? country = placeMark.country;
+       address = "${name}, ${subLocality}, ${locality}, ${administrativeArea} ${postalCode}, ${country}";
+      print(address); // do what you want with it
+      log("address ==> ${address}");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     SizeConfigCustom sizeConfig = SizeConfigCustom();
     sizeConfig.init(context);
+    getLocation();
+
     return Scaffold(
       backgroundColor: kMainColor,
       body: GetBuilder<AuthController>(
-    init: AuthController(),
-    builder: (auth) =>
+       init: AuthController(),
+       builder: (auth) =>
         Stack(children: [
         Center(
         child:
-      SingleChildScrollView(
+        SingleChildScrollView(
         child: Column(
           children: [
             const SizedBox(
@@ -58,7 +91,6 @@ class _SignUpState extends State<SignUp> {
                 ),
               ),
             ),*/
-
             Text(
               'registration_form'.tr,
               style: kTextStyle.copyWith(
@@ -158,9 +190,12 @@ class _SignUpState extends State<SignUp> {
                             ),
                           ),
                           const SizedBox(height: 20),
+
+                       //   getLcation(),
+
                           TextFormField(
                             cursorColor: kTitleColor,
-                            controller: auth.addressController,
+                            controller: /*TextEditingController()..text = address*/ auth.addressController,
                             validator: (value) {
                               if (auth.addressController.text.isEmpty) {
                                 return "this_field_can_t_be_empty".tr;
@@ -169,7 +204,8 @@ class _SignUpState extends State<SignUp> {
                             },
                             textAlign: TextAlign.start,
                             decoration: kInputDecoration.copyWith(
-                              labelText: 'address'.tr,
+                              hintStyle: kTextStyle.copyWith(color: kTitleColor),
+                              labelText: 'address ',
                               labelStyle: kTextStyle.copyWith(color: kTitleColor),
                               contentPadding: const EdgeInsets.symmetric(
                                   vertical: 30, horizontal: 10.0),

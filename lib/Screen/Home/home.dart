@@ -36,7 +36,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-   return Scaffold(
+  /* return Scaffold(
      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
      extendBody: true,
      backgroundColor: kMainColor,
@@ -44,6 +44,7 @@ class _HomeState extends State<Home> {
 
      floatingActionButton: FloatingActionButton(
        backgroundColor: Colors.orange,
+       elevation: 2.0,
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(builder: (context) => CreateParcel()));
         },
@@ -52,9 +53,10 @@ class _HomeState extends State<Home> {
       bottomNavigationBar: BottomAppBar(
           color: Colors.orange,
           shadowColor: Colors.black12,
+
         shape: CircularNotchedRectangle(),
        // padding: const EdgeInsets.symmetric(horizontal: 10),
-        height: 52,
+        height: 55,
         notchMargin: 1,
         child: Row(
           mainAxisSize: MainAxisSize.max,
@@ -62,14 +64,14 @@ class _HomeState extends State<Home> {
           children: <Widget>[
             IconButton(icon: const Icon(FontAwesomeIcons.house, size: 16.0,color: Colors.white,),
               onPressed: () {
-                setState(() => _currentPage );
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => DashBoard()));
-
+             // setState(() => _currentPage);
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => DashBoard()));
               },
             ),
 
             IconButton(icon: const Icon(FontAwesomeIcons.cartShopping,size: 16.0,color: Colors.white,),
               onPressed: () {
+               // setState(() => _currentPage);
                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => ParcelPage(height: 0.78)));
 
               },
@@ -77,46 +79,40 @@ class _HomeState extends State<Home> {
 
             IconButton(icon: const Icon(FontAwesomeIcons.clipboardList,size: 16.0,color: Colors.white,),
               onPressed: () {
-                setState(() => _currentPage );
-
                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => DeliveryChargeList()));
-
               },
+
             ),
             IconButton(icon: const Icon(FontAwesomeIcons.user, size: 16.0,color: Colors.white,),
+
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => Profile()));
               },
+
             ),
           ],
         ),
       ),
-    );
-
-
-   /* return Scaffold(
-
+    );*/
+    return Scaffold(
       backgroundColor: kBgColor,
       body: _widgetOptions.elementAt(_currentPage),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       extendBody: true,
       //specify the location of the FAB
       floatingActionButton: FloatingActionButton(
+        autofocus: true,
+        shape: CircleBorder(),
         backgroundColor: Colors.orange,
-       // shape: const CircularNotchedRectangle(),
+      //  shape: RoundedRectangleBorder(),
         onPressed: () {
-          setState(() {
             clickedCentreFAB = !clickedCentreFAB;
             Navigator.of(context).push(MaterialPageRoute(builder: (context) => CreateParcel()));
-
-//to update the animated container
-          });
         },
         tooltip: "Centre FAB",
         child: Container(
           color: Colors.orange,
-       //   margin: EdgeInsets.all(15.0),
-          child: Icon(Icons.add,),
+          child: Icon(Icons.add,color: Colors.white),
         ),
         elevation: 4.0,
       ),
@@ -125,8 +121,8 @@ class _HomeState extends State<Home> {
           clipBehavior: Clip.antiAlias,
           decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
-             *//*   topLeft: Radius.circular(5.0),
-                topRight: Radius.circular(5.0),*//*
+               topLeft: Radius.circular(5.0),
+                topRight: Radius.circular(5.0),
               ),
               color: Colors.white,
               boxShadow: [
@@ -136,11 +132,14 @@ class _HomeState extends State<Home> {
                     offset: Offset(0, -1))
               ]),
           child: BottomBar(
-            backgroundColor: Color(0xFFFFFFFF),
+            backgroundColor: Colors.orange,
+            //Color(0xFFFFFFFF),
             items: [
               /// Home
               BottomBarItem(
-                icon: const Icon(FontAwesomeIcons.house, size: 16.0),
+                icon: const Icon(FontAwesomeIcons.house, size: 16.0,color: Colors.white,),
+
+/*
                 title: Text(
                   "home".tr,
                   style: kTextStyle.copyWith(
@@ -148,6 +147,7 @@ class _HomeState extends State<Home> {
                       fontSize: 13,
                       fontWeight: FontWeight.w700),
                 ),
+*/
                 activeColor: kTitleColor,
                 inactiveColor: kTitleColor,
               ),
@@ -159,8 +159,9 @@ class _HomeState extends State<Home> {
                 backgroundColorOpacity: 0.1,
                 icon: const Icon(
                   FontAwesomeIcons.cartShopping,
-                  size: 16.0,
+                  size: 16.0,color: Colors.white,
                 ),
+/*
                 title: Text(
                   "parcel".tr,
                   style: kTextStyle.copyWith(
@@ -168,46 +169,36 @@ class _HomeState extends State<Home> {
                       fontSize: 13,
                       fontWeight: FontWeight.w700),
                 ),
+*/
                 activeColor: kTitleColor,
                 inactiveColor: kTitleColor,
               ),
 
-             *//* BottomBarItem(
-                icon: const Icon(FontAwesomeIcons.plus, size: 16.0),
-                title: Text(
-                  "Add Parcel".tr,
-                  style: kTextStyle.copyWith(
-                      color: kTitleColor,
-                      fontSize: 13,
-                      fontWeight: FontWeight.w700),
-                ),
-                activeColor: kTitleColor,
-                inactiveColor: kTitleColor,
-              ),*//*
+
 
               BottomBarItem(
-                icon: const Icon(FontAwesomeIcons.clipboardList, size: 16.0),
-                title: Text(
+                icon: const Icon(FontAwesomeIcons.clipboardList, size: 16.0,color: Colors.white,),
+               /* title: Text(
                   "delivery_charges".tr,
                   style: kTextStyle.copyWith(
                       color: kTitleColor,
                       fontSize: 13,
                       fontWeight: FontWeight.w700),
-                ),
+                ),*/
                 activeColor: kTitleColor,
                 inactiveColor: kTitleColor,
               ),
 
               /// Profile
               BottomBarItem(
-                icon: Icon(FontAwesomeIcons.user, size: 16.0),
-                title: Text(
+                icon: ImageIcon(AssetImage("assets/images/user.png")/*FontAwesomeIcons.user*/,size: 16.0,color: Colors.white,),
+              /*  title: Text(
                   "profile".tr,
                   style: kTextStyle.copyWith(
                       color: kTitleColor,
                       fontSize: 13,
                       fontWeight: FontWeight.w700),
-                ),
+                ),*/
                 activeColor: kTitleColor,
                 inactiveColor: kTitleColor,
               ),
@@ -216,7 +207,8 @@ class _HomeState extends State<Home> {
               setState(() => _currentPage = index);
             },
             selectedIndex: _currentPage,
-          )),
-    );*/
+          )
+    ),
+    );
   }
 }
