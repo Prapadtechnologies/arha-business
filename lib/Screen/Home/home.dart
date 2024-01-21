@@ -7,7 +7,6 @@ import '/Screen/delivery_charges.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-
 import '../Widgets/constant.dart';
 
 class Home extends StatefulWidget {
@@ -20,16 +19,13 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   bool isSelected = true;
   int _currentPage = 0;
-  bool clickedCentreFAB =
-      false; //boolean used to handle container animation which expands from the FAB
-  int selectedIndex =
-      0; //to handle which item is currently selected in the bottom app bar
+  bool clickedCentreFAB =false; //boolean used to handle container animation which expands from the FAB
+  int selectedIndex =0; //to handle which item is currently selected in the bottom app bar
   String text = "Home";
 
   static List<Widget> _widgetOptions = <Widget>[
     DashBoard(),
     ParcelPage(height: 0.78),
-    CreateParcel(),
     DeliveryChargeList(),
     Profile(),
   ];
@@ -106,7 +102,7 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.orange,
       //  shape: RoundedRectangleBorder(),
         onPressed: () {
-            clickedCentreFAB = !clickedCentreFAB;
+           // clickedCentreFAB = !clickedCentreFAB;
             Navigator.of(context).push(MaterialPageRoute(builder: (context) => CreateParcel()));
         },
         tooltip: "Centre FAB",
@@ -114,7 +110,7 @@ class _HomeState extends State<Home> {
           color: Colors.orange,
           child: Icon(Icons.add,color: Colors.white),
         ),
-        elevation: 4.0,
+       // elevation: 4.0,
       ),
 
       bottomNavigationBar: Container(
@@ -138,7 +134,6 @@ class _HomeState extends State<Home> {
               /// Home
               BottomBarItem(
                 icon: const Icon(FontAwesomeIcons.house, size: 16.0,color: Colors.white,),
-
 /*
                 title: Text(
                   "home".tr,
@@ -173,8 +168,6 @@ class _HomeState extends State<Home> {
                 activeColor: kTitleColor,
                 inactiveColor: kTitleColor,
               ),
-
-
 
               BottomBarItem(
                 icon: const Icon(FontAwesomeIcons.clipboardList, size: 16.0,color: Colors.white,),

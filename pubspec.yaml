@@ -31,6 +31,7 @@ dependencies:
   flutter:
     sdk: flutter
 
+  js: ^0.6.2
   cupertino_icons: ^1.0.2
   shared_preferences: ^2.0.12
   nb_utils: ^6.1.0
@@ -39,7 +40,7 @@ dependencies:
   flutter_feather_icons: ^2.0.0+1
   bottom_bar: ^2.0.1
   material_design_icons_flutter: ^7.0.7296
-  syncfusion_flutter_charts: ^23.2.7
+  syncfusion_flutter_charts: ^24.1.45+2
   country_code_picker: ^3.0.0
   file_picker: ^6.1.1
   carousel_slider: ^4.1.1
@@ -62,7 +63,8 @@ dependencies:
   change_app_package_name: ^1.1.0
   geolocator: ^10.1.0
   geocoding: ^2.0.4
-
+  flutter_google_places_hoc081098: ^2.0.0-beta
+  google_api_headers: ^2.0.3
 
 dev_dependencies:
   flutter_test:

@@ -1,4 +1,7 @@
 import 'dart:async';
+import 'dart:developer';
+
+import 'package:geolocator/geolocator.dart';
 
 import '/utils/image.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -57,6 +60,7 @@ class _SplashScreenState extends State<SplashScreen> {
       Get.off(() => const SignIn());
     }
   }
+
 
   @override
   Widget build(BuildContext context) {

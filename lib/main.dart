@@ -60,7 +60,7 @@ class MyApp extends StatelessWidget {
               debugShowCheckedModeBanner: false,
               translations: Languages(),
               locale: lang,
-              title: 'Merchant',
+              title: 'Arha Merchant',
               theme: ThemeData(fontFamily: 'Display'),
               home: const SplashScreen(),
             )));

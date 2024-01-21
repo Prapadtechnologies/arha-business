@@ -1,6 +1,3 @@
-
-import 'dart:js_util';
-import 'dart:html';
 import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -36,6 +33,7 @@ class _SignUpState extends State<SignUp> {
   AuthController authController = AuthController();
   GlobalController globalController = Get.put(GlobalController());
   String address ='';
+   Position? currentposition = null;
   late TextEditingController _controller;
 
   getLocation()async{
@@ -44,10 +42,10 @@ class _SignUpState extends State<SignUp> {
       log("Location denied");
       LocationPermission ask = await Geolocator.requestPermission();
     }else{
-      Position currentposition = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
-      log("Lat ==> ${currentposition.latitude.toString()}");
-      log("Long ==> ${currentposition.longitude.toString()}");
-      List<Placemark> newPlace = await placemarkFromCoordinates(currentposition.latitude , currentposition.longitude);
+      currentposition = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
+      log("Lat ==> ${currentposition!.latitude.toString()}");
+      log("Long ==> ${currentposition!.longitude.toString()}");
+      List<Placemark> newPlace = await placemarkFromCoordinates(currentposition!.latitude , currentposition!.longitude);
       Placemark placeMark  = newPlace[0];
       String? name = placeMark.name;
       String? subLocality = placeMark.subLocality;
@@ -195,13 +193,17 @@ class _SignUpState extends State<SignUp> {
 
                           TextFormField(
                             cursorColor: kTitleColor,
-                            controller: /*TextEditingController()..text = address*/ auth.addressController,
-                            validator: (value) {
+                            controller: /*auth.addressController+*/ TextEditingController()..text = address.toString(),
+/*
+                            TextEditingController()..text = address
+*/
+                            /*validator: (value) {
                               if (auth.addressController.text.isEmpty) {
                                 return "this_field_can_t_be_empty".tr;
                               }
                               return null;
-                            },
+                            },*/
+
                             textAlign: TextAlign.start,
                             decoration: kInputDecoration.copyWith(
                               hintStyle: kTextStyle.copyWith(color: kTitleColor),
@@ -233,7 +235,6 @@ class _SignUpState extends State<SignUp> {
                                     onChanged: (value) {
                                       setState(() {
                                         hub = value!.id!;
-
                                       });
                                     },
                                   )
@@ -334,7 +335,7 @@ class _SignUpState extends State<SignUp> {
                                   color: kMainColor),
                               onPressed: () async {
                                 if (_formKey.currentState!.validate()) {
-                                 await auth.signupOnTap(hub);
+                                 await auth.signupOnTap(hub,address+currentposition!.latitude.toString()+currentposition!.latitude.toString());
                                 }
                               })),
                     Flexible(child:

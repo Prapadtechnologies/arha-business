@@ -37,14 +37,13 @@ class AuthController extends GetxController {
   bool obscureText = true;
   bool loader = false;
 
+
   changeVisibility() {
     obscureText = !obscureText;
     Future.delayed(const Duration(milliseconds: 10), () {
       update();
     });
   }
-
-
 
   loginOnTap({BuildContext? context, String? email, String? pass}) async {
     loader = true;
@@ -135,21 +134,20 @@ class AuthController extends GetxController {
     });
   }
 
-  signupOnTap(hubID) async {
+  signupOnTap(hubID, String locationaddress) async {
     loader = true;
     Future.delayed(Duration(milliseconds: 10), () {
       update();
     });
 
       Map body = {
-        'business_name': businessNameController.text,
+        'business_name': firstNameController.text +' '+ lastNameController.text,/*businessNameController.text,*/
         'full_name': firstNameController.text +' '+ lastNameController.text,
-        'address': addressController.text,
+        'address': addressController.text+locationaddress,
         'email': emailController.text,
         'mobile': phoneController.text,
         'password': passwordController.text,
         'hub_id': hubID.toString(),
-
       };
       String jsonBody = json.encode(body);
       print(jsonBody);

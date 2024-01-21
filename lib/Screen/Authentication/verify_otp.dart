@@ -38,7 +38,7 @@ class _OtpVerifyState extends State<OtpVerify> {
               height: 120,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('images/rx.png'),
+                  image: AssetImage('assets/images/logo.png'/*'images/rx.png'*/),
                   fit: BoxFit.contain,
                 ),
               ),
