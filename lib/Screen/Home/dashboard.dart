@@ -179,6 +179,7 @@ class _DashBoardState extends State<DashBoard> {
     long = currentPosition!.longitude;
 
   }
+
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
   }
@@ -587,35 +588,34 @@ class _DashBoardState extends State<DashBoard> {
 
                               Container(height: 30, width: 150,
                                 alignment: Alignment.center,
-                                margin: EdgeInsets.only(left: 100),
+                                 margin: EdgeInsets.only(left: 120),
                                 child: ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>  CreateParcel(),
-                                        settings: RouteSettings(
-                                          arguments: locationAddress+"123"+fromlocation,
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>  CreateParcel(),
+                                          settings: RouteSettings(
+                                            arguments: locationAddress+"123"+fromlocation,
+                                          ),
                                         ),
-                                      ),
-                                    );
+                                      );
                                     },
 
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.orange,
-                                    elevation: 2,
-                                  ),
-                                  child: const Text(
-                                    'Create Parcel',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.orange,
+                                      elevation: 2,
+                                    ),
+                                    child: const Text(
+                                      'Create Parcel',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
                                     ),
                                   ),
-                                ),
                               ),
-
 
                               CarouselSlider.builder(
                                 options: CarouselOptions(
@@ -739,6 +739,8 @@ class _DashBoardState extends State<DashBoard> {
                                   },
                                 ),
                               ),
+
+                              const SizedBox(height: 20,)
                             ],
                           ),
                         ),
