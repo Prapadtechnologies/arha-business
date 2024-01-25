@@ -175,18 +175,18 @@ class ParcelController extends GetxController {
     });
   }
 
-  parcelPost() {
+  parcelPost(PickupAddress,DeliveryAddress) {
     loaderParcel = true;
     Future.delayed(Duration(milliseconds: 10), () {
       update();
     });
     Map chargeDetails = {
       'vatTex': merchantData.vat,
-      'VatAmount': vatAmount.toStringAsFixed(2),
+      'VatAmount': vatAmount.toStringAsFixed(0/*2*/),
       'deliveryChargeAmount': deliveryChargeAmount.toStringAsFixed(2),
-      'codChargeAmount': codChargeAmount.toStringAsFixed(2),
+      'codChargeAmount': codChargeAmount.toStringAsFixed(0/*2*/),
       'totalDeliveryChargeAmount': totalDeliveryChargeAmount.toStringAsFixed(2),
-      'currentPayable': currentPayable.toStringAsFixed(2),
+      'currentPayable': currentPayable.toStringAsFixed(0/*2*/),
       'packagingAmount': packagingAmount.toStringAsFixed(2),
       'liquidFragileAmount': fragileLiquidAmounts.toStringAsFixed(2),
     };
@@ -196,7 +196,7 @@ class ParcelController extends GetxController {
       'merchant_id': merchantID,
       'weight': deliveryChargesValue.weight == '0'?'':deliveryChargesValue.weight,
       'pickup_phone': pickupPhoneController.text.toString(),
-      'pickup_address': pickupAddressController.text.toString(),
+      'pickup_address': PickupAddress /*pickupAddressController.text.toString()*/,
       'pickup_lat': pickupLate,
       'pickup_long': pickupLong,
       'invoice_no': "0"/*invoiceController.text.toString()*/,
@@ -205,15 +205,16 @@ class ParcelController extends GetxController {
       'category_id': deliveryChargesValue.categoryId.toString(),
       'delivery_type_id': deliveryTypID == 'Next Day'? 1: deliveryTypID == 'Same Day'?2: deliveryTypID == 'Sub City'?3: deliveryTypID == 'Outside City'?4:'',
       'customer_name': customerController.text.toString(),
-      'customer_address': customerAddressController.text.toString(),
-      'lat': customerAddressLatController.text.toString(),
-      'long': customerAddressLongController.text.toString(),
+      'customer_address': DeliveryAddress/*customerAddressController.text.toString()*/,
+      'lat': "28.4070219"/*customerAddressLatController.text.toString()*/,
+      'long': "79.471989"/*customerAddressLongController.text.toString()*/,
       'customer_phone': customerPhoneController.text.toString(),
       'note': noteController.text.toString(),
       'parcel_bank': isParcelBankCheck ? 'on':'',
       'packaging_id': packagingID == '0'?'':packagingID,
       'fragileLiquid': isLiquidChecked ? 'on':'',
     };
+
     String jsonBody = json.encode(body);
     print(jsonBody);
     server
@@ -295,7 +296,7 @@ class ParcelController extends GetxController {
     });
   }
 
-  void calculateTotal(context) {
+  void calculateTotal(context,PickupAddress, DeliveryAddress) {
       totalDeliveryChargeAmount   = 0;
       totalCashCollection = 0;
       codChargeAmount = 0;
@@ -353,7 +354,7 @@ class ParcelController extends GetxController {
        print('netPayable==> '+ '${netPayable}');
        print('currentPayable==> '+ '${currentPayable}');
 
-       showPopUp(context, totalCashCollection,deliveryChargeAmount,codChargeAmount,fragileLiquidAmounts,packagingAmount,totalDeliveryChargeAmount,vatAmount,netPayable,currentPayable);
+       showPopUp(context,PickupAddress,DeliveryAddress, totalCashCollection,deliveryChargeAmount,codChargeAmount,fragileLiquidAmounts,packagingAmount,totalDeliveryChargeAmount,vatAmount,netPayable,currentPayable);
       Future.delayed(Duration(milliseconds: 10), () {
       update();
       });
@@ -364,7 +365,7 @@ class ParcelController extends GetxController {
   }
 
 
-  void showPopUp(context, totalCashCollectionParcel,deliveryChargeAmountParcel,codChargeAmountParcel,fragileLiquidAmountsParcel,packagingAmountParcel,totalDeliveryChargeAmountParcel,vatAmountParcel,netPayableParcel,currentPayableParcel) {
+  void showPopUp(context,PickupAddress,DeliveryAddress, totalCashCollectionParcel,deliveryChargeAmountParcel,codChargeAmountParcel,fragileLiquidAmountsParcel,packagingAmountParcel,totalDeliveryChargeAmountParcel,vatAmountParcel,netPayableParcel,currentPayableParcel) {
     showDialog(
         barrierDismissible: false,
         context: context,
@@ -395,14 +396,14 @@ class ParcelController extends GetxController {
                           fontSize: 16.0),
                     ),
                     trailing: Text(
-                      'amount_tk'.tr,
+                      'amount'.tr,
                       style: kTextStyle.copyWith(
                           color: kTitleColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 16.0),
                     ),
                   ),
-                  Card(
+                 /* Card(
                     child: ListTile(
                       title: Text(
                         'cash_collection'.tr,
@@ -414,7 +415,7 @@ class ParcelController extends GetxController {
                         style: kTextStyle.copyWith(color: kTitleColor),
                       ),
                     ),
-                  ),
+                  ),*/
                   Card(
                     child: ListTile(
                       title: Text(
@@ -428,7 +429,8 @@ class ParcelController extends GetxController {
                       ),
                     ),
                   ),
-                  Card(
+
+                 /* Card(
                     child: ListTile(
                       title: Text(
                         'cod_charge'.tr,
@@ -440,7 +442,8 @@ class ParcelController extends GetxController {
                         style: kTextStyle.copyWith(color: kTitleColor),
                       ),
                     ),
-                  ),
+                  ),*/
+
                   Card(
                     child: ListTile(
                       title: Text(
@@ -480,7 +483,7 @@ class ParcelController extends GetxController {
                       ),
                     ),
                   ),
-                  Card(
+                 /* Card(
                     child: ListTile(
                       title: Text(
                         'vat'.tr,
@@ -518,12 +521,11 @@ class ParcelController extends GetxController {
                         style: kTextStyle.copyWith(color: kTitleColor),
                       ),
                     ),
-                  ),
+                  ),*/
                   const SizedBox(height: 30.0),
                   ButtonGlobal(buttontext: 'confirm'.tr, buttonDecoration: kButtonDecoration, onPressed: (){
                     FocusScope.of(context).requestFocus(new FocusNode());
-
-                    parcelPost();
+                    parcelPost(PickupAddress,DeliveryAddress);
                     Get.back();
                     // Get.off(ParcelPage());
                   })

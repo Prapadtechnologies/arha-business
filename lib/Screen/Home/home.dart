@@ -10,7 +10,7 @@ import 'package:get/get.dart';
 import '../Widgets/constant.dart';
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  const Home( {Key? key}) : super(key: key);
 
   @override
   State<Home> createState() => _HomeState();

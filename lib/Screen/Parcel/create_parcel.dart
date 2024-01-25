@@ -12,15 +12,19 @@ import '../Widgets/constant.dart';
 import '../Widgets/loader.dart';
 
 class CreateParcel extends StatefulWidget {
-  const CreateParcel({Key? key}) : super(key: key);
+
+  CreateParcel({Key? key}) : super(key: key);
 
   @override
   State<CreateParcel> createState() => _CreateParcelState();
+
 }
 
 class _CreateParcelState extends State<CreateParcel> {
   ParcelController parcelController = Get.put(ParcelController());
   final _formKey = GlobalKey<FormState>();
+
+  String DestignationAddress = "";
 
   List<String> deliveryType = [
     'Same Day',
@@ -29,6 +33,10 @@ class _CreateParcelState extends State<CreateParcel> {
     'Outside City',
   ];
   String type = 'Same Day';
+
+  var FromAddress;
+  var PickupAddress;
+  var DeliveryAddress;
 
   DropdownButton<String> selectType() {
     List<DropdownMenuItem<String>> dropDownItems = [];
@@ -63,6 +71,13 @@ class _CreateParcelState extends State<CreateParcel> {
     SizeConfigCustom sizeConfig = SizeConfigCustom();
     sizeConfig.init(context);
     final Size size = MediaQuery.of(context).size;
+    FromAddress = ModalRoute.of(context)!.settings.arguments;
+    var parts = FromAddress.split('123');
+     PickupAddress = parts[0].trim();
+     DeliveryAddress = parts.sublist(1).join(',').trim();
+    // List<String> split = FromAddress.split('123');
+
+    log("value ==> ${PickupAddress+"::"+DeliveryAddress}");
     return Scaffold(
       backgroundColor: kMainColor,
       appBar: AppBar(
@@ -121,7 +136,7 @@ class _CreateParcelState extends State<CreateParcel> {
                         return InputDecorator(
                           decoration: kInputDecoration.copyWith(
                             floatingLabelBehavior: FloatingLabelBehavior.always,
-                            labelText: 'shop'.tr,
+                            labelText: 'Your name'.tr,
                             hintText: 'select_shop'.tr,
                             labelStyle: kTextStyle.copyWith(color: kTitleColor),
                             border: OutlineInputBorder(
@@ -146,11 +161,9 @@ class _CreateParcelState extends State<CreateParcel> {
                               }).toList(),
                               onChanged: (newValue) {
                                 setState(() {
-                                  parcel.shopIndex =
-                                      parcel.shopList
-                                          .indexOf(newValue!);
+                                  parcel.shopIndex = parcel.shopList.indexOf(newValue!);
                                   parcel.shopID = newValue.id.toString();
-                                  parcel.pickupAddress = newValue.address.toString();
+                                  parcel.pickupAddress = PickupAddress/*newValue.address.toString()*/;
                                   parcel.pickupPhone = newValue.contactNo.toString();
                                   parcel.pickupLate = newValue.merchantLat.toString();
                                   parcel.pickupLong = newValue.merchantLong.toString();
@@ -190,7 +203,7 @@ class _CreateParcelState extends State<CreateParcel> {
                         borderSide:
                             BorderSide(color: kBorderColorTextField, width: 2),
                       ),
-                      labelText: 'pickup_phone'.tr,
+                      labelText: 'Your phone'.tr,
                       labelStyle: kTextStyle.copyWith(color: kTitleColor),
                       hintText: '017XXXXXXXX',
                       hintStyle: kTextStyle.copyWith(color: kGreyTextColor),
@@ -204,7 +217,7 @@ class _CreateParcelState extends State<CreateParcel> {
                       });
                     },
                     controller: parcel.pickupAddressController
-                      ..text = parcel.pickupAddress.toString()
+                      ..text = PickupAddress/*parcel.pickupAddress.toString()*/
                       ..selection = TextSelection.collapsed(
                           offset: parcel.pickupAddressController.text.length),
                     showCursor: true,
@@ -225,7 +238,7 @@ class _CreateParcelState extends State<CreateParcel> {
                       ),
                       labelText: 'pickup_address'.tr,
                       labelStyle: kTextStyle.copyWith(color: kTitleColor),
-                      hintText: 'enter_address'.tr,
+                      hintText: 'pickup_address'.tr,
                       hintStyle: kTextStyle.copyWith(color: kGreyTextColor),
                     ),
                   ),
@@ -296,8 +309,8 @@ class _CreateParcelState extends State<CreateParcel> {
                         return InputDecorator(
                           decoration: kInputDecoration.copyWith(
                             floatingLabelBehavior: FloatingLabelBehavior.always,
-                            labelText: 'category'.tr+'*',
-                            hintText: 'select_category'.tr,
+                            labelText: 'Select weight'.tr+'*',
+                            hintText: 'Select weight'.tr,
                             labelStyle: kTextStyle.copyWith(color: kTitleColor),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(5.0),
@@ -341,8 +354,8 @@ class _CreateParcelState extends State<CreateParcel> {
                         return InputDecorator(
                           decoration: kInputDecoration.copyWith(
                             floatingLabelBehavior: FloatingLabelBehavior.always,
-                            labelText: 'select_type'.tr+'*',
-                            hintText: 'delivery_type'.tr,
+                            labelText: 'Delivery in'.tr+'*',
+                            hintText: 'Delivery in'.tr,
                             labelStyle: kTextStyle.copyWith(color: kTitleColor),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(5.0),
@@ -372,9 +385,9 @@ class _CreateParcelState extends State<CreateParcel> {
                         borderSide:
                             BorderSide(color: kBorderColorTextField, width: 2),
                       ),
-                      labelText: 'customer_name'.tr+'*',
+                      labelText: 'Recipient name'.tr+'*',
                       labelStyle: kTextStyle.copyWith(color: kTitleColor),
-                      hintText: 'customer_name'.tr,
+                      hintText: 'Recipient name'.tr,
                       hintStyle: kTextStyle.copyWith(color: kGreyTextColor),
                     ),
                   ),
@@ -392,17 +405,29 @@ class _CreateParcelState extends State<CreateParcel> {
                     decoration: kInputDecoration.copyWith(
                       enabledBorder: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(2.0)),
-                        borderSide:
-                            BorderSide(color: kBorderColorTextField, width: 2),
+                        borderSide: BorderSide(color: kBorderColorTextField, width: 2),
                       ),
-                      labelText: 'customer_phone'.tr+'*',
+                      labelText: 'Recipient phone'.tr+'*',
                       labelStyle: kTextStyle.copyWith(color: kTitleColor),
-                      hintText: 'customer_phone'.tr,
+                      hintText: 'Recipient phone'.tr,
                       hintStyle: kTextStyle.copyWith(color: kGreyTextColor),
                     ),
                   ),
                   const SizedBox(height: 20.0),
-                  Column(
+                  TextFormField(
+                    controller:TextEditingController()..text = DeliveryAddress /*parcel.noteController*/,
+                    cursorColor: kTitleColor,
+                    textAlign: TextAlign.start,
+                    decoration: kInputDecoration.copyWith(
+                      labelText: 'Delivery Address'.tr,
+                      hintText: 'Delivery Address'.tr,
+                      labelStyle: kTextStyle.copyWith(color: kTitleColor),
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 20, horizontal: 10.0),
+                    ),
+                  ),
+
+                  /*Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
@@ -412,7 +437,7 @@ class _CreateParcelState extends State<CreateParcel> {
                         controller: parcel.customerAddressController
                       ),
                     ],
-                  ),
+                  ),*/
                   const SizedBox(height: 20.0),
                   TextFormField(
                     controller: parcel.noteController,
@@ -533,10 +558,11 @@ class _CreateParcelState extends State<CreateParcel> {
                           FocusScope.of(context).requestFocus(new FocusNode());
                           if (_formKey.currentState!.validate()) {
                             if(parcel.deliveryChargesID != '' && parcel.deliveryTypID != ''){
-                              parcel.customerAddressController.text = FlutterGooglePlacesWeb.value['name']??'';
-                              parcel.customerAddressLatController.text = FlutterGooglePlacesWeb.value['lat']??'';
-                              parcel.customerAddressLongController.text = FlutterGooglePlacesWeb.value['long']??'';
-                              parcel.calculateTotal(context);
+
+                             /* parcel.customerAddressController.text = FlutterGooglePlacesWeb.value['name']??'';
+                              parcel.customerAddressLatController.text  = FlutterGooglePlacesWeb.value['lat']??'';
+                              parcel.customerAddressLongController.text= FlutterGooglePlacesWeb.value['long']??'';*/
+                              parcel.calculateTotal(context,PickupAddress,DeliveryAddress);
                           }else if(parcel.deliveryChargesID == ''){
                             Get.rawSnackbar(
                                 message: "Please select category",

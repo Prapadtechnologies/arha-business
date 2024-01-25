@@ -191,13 +191,7 @@ class _SignInState extends State<SignIn> {
                               color: kMainColor),
                           onPressed: () async {
                               if (_formKey.currentState!.validate()) {
-                                auth.loginOnTap(
-                                    email: _emailController.text
-                                        .toString()
-                                        .trim(),
-                                    pass: _passwordController.text
-                                        .toString()
-                                        .trim());
+                                auth.loginOnTap(email: _emailController.text.toString().trim(), pass: _passwordController.text.toString().trim());
                               }
                           },
                          ),

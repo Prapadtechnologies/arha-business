@@ -8,6 +8,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_api_headers/google_api_headers.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import '../Parcel/create_parcel.dart';
 import '../Parcel/parcel_all_staus.dart';
 import '../Payment/AccTransaction/acc_transaction.dart';
 import '../Payment/PaymentRequest/invoice_list.dart';
@@ -48,24 +49,33 @@ class DashBoard extends StatefulWidget {
 
   @override
   State<DashBoard> createState() => _DashBoardState();
+
 }
 
 class _DashBoardState extends State<DashBoard> {
   LanguageController languageController = Get.put(LanguageController());
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
-  String googleApikey = "AIzaSyBc9NWl1xW1re3YptnoWklDPvbNvixWQ2E"/*"AIzaSyA59LKmwVl-gP4U58kSKFTdu89I72bC1hM"*/;
-  GoogleMapController? mapController; //contrller for Google map
+  String googleApikey = "AIzaSyBc9NWl1xW1re3YptnoWklDPvbNvixWQ2E"
+
+  /*"AIzaSyA59LKmwVl-gP4U58kSKFTdu89I72bC1hM"*/;
+
+ // GoogleMapController? mapController; //contrller for Google map
   CameraPosition? cameraPosition;
-  late LatLng startLocation /*= LatLng(28.4222787, 79.4705642)*/;
   String locationAddress = "";
   String googleApikey_2 = "AIzaSyA59LKmwVl-gP4U58kSKFTdu89I72bC1hM";
   GoogleMapController? mapController_2; //contrller for Google map
   CameraPosition? cameraPosition_2;
-  late LatLng startLocation_2 /*= LatLng(28.4222787, 79.4705642)*/;
+  late LatLng startLocation_2;
+
   String fromlocation = "search designation";
+  late LatLng startLocation;
+
 
   final box = GetStorage();
   Language? selectedLang;
+  var Current_Latitude;
+  var Current_Longitude;
 
   List<String> reportList = [
     'total_parcel'.tr,
@@ -82,10 +92,10 @@ class _DashBoardState extends State<DashBoard> {
   ];
 
   List<Color> colorList = [
-    const Color(0xFFfafafb /*0xFFEFFBF8*/),
-    const Color(0xFFfafafb /*0xFFFDF9EE*/),
-    const Color(0xFFfafafb /*0xFFFBEBF1*/),
-    const Color(0xFFfafafb /*0xFFEFF5FA*/),
+    const Color(0xFFFFFFFF/*0xFFfafafb*/ /*0xFFEFFBF8*/),
+    const Color(0xFFFFFFFF /*0xFFFDF9EE*/),
+    const Color(0xFFFFFFFF /*0xFFFBEBF1*/),
+    const Color(0xFFFFFFFF /*0xFFEFF5FA*/),
   ];
 
   List<String> imageList = [
@@ -96,6 +106,33 @@ class _DashBoardState extends State<DashBoard> {
 
   DashboardController dashboardController = DashboardController();
   GlobalController globalController = GlobalController();
+  dynamic Slati;
+  dynamic Slongi;
+
+  late GoogleMapController mapController;
+
+   LatLng? _currentPosition;
+  var fromlocationdata ;
+   double? lat;
+   double? long;
+
+  void set_location(double latitude, double longitude) async {
+
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setDouble("C_Latitude", latitude);
+    sharedPreferences.setDouble("C_Longitude", longitude);
+    getSessionData();
+  }
+
+  void getSessionData() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    Slati = sharedPreferences.getDouble("C_Latitude");
+    Slongi = sharedPreferences.getDouble("C_Longitude");
+    log("SessionData ==> ${Slati}");
+    log("SessionData2 ==> ${Slongi}");
+
+    setState(() {});
+  }
 
   @override
   void initState() {
@@ -113,43 +150,76 @@ class _DashBoardState extends State<DashBoard> {
         margin: const EdgeInsets.only(bottom: 20, left: 20, right: 20),
       );
     });
-
     // TODO: implement initState
     super.initState();
+    getSessionData();
+    getStackFlowLocation();
+
   }
 
-  getLocation()async{
-    LocationPermission permission  = await Geolocator.checkPermission();
-    if(permission == LocationPermission.denied || permission == LocationPermission.deniedForever){
-      log("Location denied");
-      LocationPermission ask = await Geolocator.requestPermission();
-    }else{
-     Position currentposition = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
-      log("Lat ==> ${currentposition!.latitude.toString()}");
-      log("Long ==> ${currentposition!.longitude.toString()}");
-     startLocation = LatLng(currentposition.latitude as double, currentposition.longitude as double);
-     startLocation_2 = LatLng(currentposition.latitude as double, currentposition.longitude as double);
-     //----------get Address-------------------------
+  getStackFlowLocation() async {
+    LocationPermission permission;
+    permission = await Geolocator.requestPermission();
 
-     List<Placemark> newPlace = await placemarkFromCoordinates(currentposition!.latitude , currentposition!.longitude);
-     Placemark placeMark  = newPlace[0];
-     String? name = placeMark.name;
-     String? subLocality = placeMark.subLocality;
-     String? locality = placeMark.locality;
-     String? administrativeArea = placeMark.administrativeArea;
-     String? postalCode = placeMark.postalCode;
-     String? country = placeMark.country;
-     locationAddress = "${name}, ${subLocality}, ${locality}, ${administrativeArea} ${postalCode}, ${country}";
-     print(locationAddress); // do what you want with it
-     log("address ==> ${locationAddress}");
+    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    double lat = position.latitude;
+    double long = position.longitude;
+
+    LatLng location = LatLng(lat, long);
+
+    setState(() {
+      _currentPosition = location;
+
+      setup(_currentPosition);
+    });
+  }
+
+  void setup(LatLng? currentPosition) {
+    lat = currentPosition!.latitude;
+    long = currentPosition!.longitude;
+
+  }
+  void _onMapCreated(GoogleMapController controller) {
+    mapController = controller;
+  }
+
+  getLocation() async {
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied || permission == LocationPermission.deniedForever) {
+      LocationPermission ask = await Geolocator.requestPermission();
+    } else {
+      Position currentposition = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+      startLocation = LatLng(currentposition.latitude as double, currentposition.longitude as double);
+      startLocation_2 = LatLng(currentposition.latitude as double, currentposition.longitude as double);
+
+      set_location(currentposition.latitude,currentposition.longitude);
+
+      log("Lat ==> ${currentposition.latitude.toString()}");
+      log("Long ==> ${currentposition.longitude.toString()}");
+      Current_Latitude = currentposition.latitude as double;
+      Current_Longitude = currentposition.longitude as double;
+      //----------get Address-------------------------
+
+      List<Placemark> newPlace = await placemarkFromCoordinates(currentposition!.latitude, currentposition!.longitude);
+      Placemark placeMark = newPlace[0];
+      String? name = placeMark.name;
+      String? subLocality = placeMark.subLocality;
+      String? locality = placeMark.locality;
+      String? administrativeArea = placeMark.administrativeArea;
+      String? postalCode = placeMark.postalCode;
+      String? country = placeMark.country;
+      locationAddress = "${name}, ${subLocality}, ${locality}, ${administrativeArea} ${postalCode}, ${country}";
+      print("LocationAddress ==> ${locationAddress}");
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    selectedLang = languageController.languageList[languageController.languageList.indexWhere((i) => i.locale == Get.locale)];
     getLocation();
-    return Scaffold(backgroundColor: kMainColor,
+    selectedLang = languageController.languageList[languageController.languageList.indexWhere((i) => i.locale == Get.locale)];
+    return Scaffold(
+      backgroundColor: kMainColor,
+
       drawer: Drawer(
         backgroundColor: kBgColor,
         child: SingleChildScrollView(
@@ -169,23 +239,31 @@ class _DashBoardState extends State<DashBoard> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       CachedNetworkImage(
-                        imageUrl: Get.find<GlobalController>().userImage == null
+                        imageUrl: Get
+                            .find<GlobalController>()
+                            .userImage == null
                             ? 'assets/images/profile.png'
-                            : Get.find<GlobalController>().userImage.toString(),
-                        imageBuilder: (context, imageProvider) => CircleAvatar(
-                          radius: 25.0,
-                          backgroundImage: imageProvider,
-                          backgroundColor: Colors.transparent,
-                        ),
-                        placeholder: (context, url) => Shimmer.fromColors(
-                          child: CircleAvatar(radius: 25.0),
-                          baseColor: Colors.grey[300]!,
-                          highlightColor: Colors.grey[400]!,
-                        ),
-                        errorWidget: (context, url, error) => Icon(
-                          CupertinoIcons.person,
-                          size: 30,
-                        ),
+                            : Get
+                            .find<GlobalController>()
+                            .userImage
+                            .toString(),
+                        imageBuilder: (context, imageProvider) =>
+                            CircleAvatar(
+                              radius: 25.0,
+                              backgroundImage: imageProvider,
+                              backgroundColor: Colors.transparent,
+                            ),
+                        placeholder: (context, url) =>
+                            Shimmer.fromColors(
+                              child: CircleAvatar(radius: 25.0),
+                              baseColor: Colors.grey[300]!,
+                              highlightColor: Colors.grey[400]!,
+                            ),
+                        errorWidget: (context, url, error) =>
+                            Icon(
+                              CupertinoIcons.person,
+                              size: 30,
+                            ),
                       ),
                       SizedBox(
                         width: 10,
@@ -193,17 +271,27 @@ class _DashBoardState extends State<DashBoard> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          if (Get.find<GlobalController>().userName != null)
+                          if (Get
+                              .find<GlobalController>()
+                              .userName != null)
                             Text(
-                              Get.find<GlobalController>().userName.toString(),
+                              Get
+                                  .find<GlobalController>()
+                                  .userName
+                                  .toString(),
                               style: kTextStyle.copyWith(
                                   fontSize: 16,
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold),
                             ),
-                          if (Get.find<GlobalController>().userEmail != null)
+                          if (Get
+                              .find<GlobalController>()
+                              .userEmail != null)
                             Text(
-                              Get.find<GlobalController>().userEmail.toString(),
+                              Get
+                                  .find<GlobalController>()
+                                  .userEmail
+                                  .toString(),
                               style: kTextStyle.copyWith(color: Colors.white),
                             ),
                         ],
@@ -257,9 +345,9 @@ class _DashBoardState extends State<DashBoard> {
                         color: kTitleColor, size: 18),
                   ),
                 ),
-
                 ListTile(
-                  onTap: () => {
+                  onTap: () =>
+                  {
                     Get.find<GlobalController>().userLogout(),
                     Navigator.of(context).pop()
                   },
@@ -289,331 +377,386 @@ class _DashBoardState extends State<DashBoard> {
           ),
         ),
       ),
+
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.white),
         titleSpacing: 0,
         backgroundColor: kMainColor,
         elevation: 0.0,
         title: Text(
-          '${Get.find<GlobalController>().siteName}',
+          'Arha Express' /*'${Get.find<GlobalController>().siteName}'*/,
           style: kTextStyle.copyWith(
               color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.bold),
         ),
       ),
+
       body: GetBuilder<DashboardController>(
           init: DashboardController(),
-          builder: (dashboard) => SingleChildScrollView(
+          builder: (dashboard) =>
+              SingleChildScrollView(
                 padding: EdgeInsets.only(top: 10, bottom: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 10.0),
-                    dashboard.dashboardLoader ? DashboardShimmer() : Container(
-                            padding: const EdgeInsets.all(10.0),
-                            decoration: const BoxDecoration(
-                              color: Color(0xFFf9f9fe),
-                              borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(30.0),
-                                topLeft: Radius.circular(30.0),
-                              ),
-                            ),
-
-                            child: SingleChildScrollView(
-                              controller: ScrollController(),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  //search autoconplete input
-                                  Positioned(
-                                      child: InkWell(
-                                          onTap: () async {
-                                            var place = await PlacesAutocomplete.show(
-                                                    context: context,
-                                                    apiKey: googleApikey,
-                                                    mode: Mode.overlay,
-                                                    types: [],
-                                                    strictbounds: false,
-                                                    components: [
-                                                      Component(Component.country, 'IN')
-                                                    ],
-                                                    //google_map_webservice package
-                                                    onError: (err) {
-                                                      print(err);
-                                                    });
-
-                                            if (place != null) {
-                                              setState(() {
-                                                locationAddress = place.description.toString();
-                                              });
-
-                                              //form google_maps_webservice package
-                                              final plist = GoogleMapsPlaces(
-                                                apiKey: googleApikey,
-                                                apiHeaders: await GoogleApiHeaders().getHeaders(),
-                                                //from google_api_headers package
-                                              );
-                                              String placeid = place.placeId ?? "0";
-                                              final detail = await plist.getDetailsByPlaceId(placeid);
-                                              final geometry = detail.result.geometry!;
-                                              final lat = geometry.location.lat;
-                                              final lang =geometry.location.lng;
-                                              var newlatlang =LatLng(lat, lang);
-
-                                              //move map camera to selected place with animation
-                                              mapController?.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: newlatlang, zoom: 17)));
-                                            }
-                                          },
-                                          child: Padding(
-                                            padding: EdgeInsets.all(10),
-                                            child: Card(
-                                              child: Container(
-                                                  padding: EdgeInsets.all(0),
-                                                  width: MediaQuery.of(context).size.width - 30,
-                                                  child: ListTile(
-                                                    title: Text(locationAddress,
-                                                      overflow: TextOverflow.ellipsis,
-                                                      style: TextStyle(
-                                                          fontSize: 14),
-                                                    ),
-                                                    trailing:
-                                                        Icon(Icons.search),
-                                                    dense: true,
-                                                  )),
-                                            ),
-                                          ))),
-
-                                 Container(height: 250, width: 400,
-                                   child: GoogleMap(
-                                   zoomGesturesEnabled: true,
-                                   initialCameraPosition: CameraPosition(
-                                     target: startLocation,
-                                     zoom: 14.0,
-                                   ),
-                                   mapType: MapType.normal,
-                                   onMapCreated: (controller) {
-                                     setState(() {
-                                       mapController = controller;
-                                     });
-                                   },
-                                 ),
-                                 ),
-
-                                  Positioned(
-                                      child: InkWell(
-                                          onTap: () async {
-                                            var place = await PlacesAutocomplete.show(
-                                                context: context,
-                                                apiKey: googleApikey_2,
-                                                mode: Mode.overlay,
-                                                types: [],
-                                                strictbounds: false,
-                                                components: [
-                                                  Component(Component.country, 'IN')
-                                                ],
-                                                //google_map_webservice package
-                                                onError: (err) {
-                                                  print(err);
-                                                });
-
-                                            if (place != null) {
-                                              setState(() {
-                                                fromlocation = place.description.toString();
-                                              });
-
-                                              //form google_maps_webservice package
-                                              final plist = GoogleMapsPlaces(
-                                                apiKey: googleApikey_2,
-                                                apiHeaders: await GoogleApiHeaders().getHeaders(),
-                                                //from google_api_headers package
-                                              );
-                                              String placeid = place.placeId ?? "0";
-                                              final detail = await plist.getDetailsByPlaceId(placeid);
-                                              final geometry = detail.result.geometry!;
-                                              final lat = geometry.location.lat;
-                                              final lang =geometry.location.lng;
-                                              var newlatlang =LatLng(lat, lang);
-
-                                              //move map camera to selected place with animation
-                                              mapController_2?.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: newlatlang, zoom: 17)));
-                                            }
-                                          },
-                                          child: Padding(
-                                            padding: EdgeInsets.all(10),
-                                            child: Card(
-                                              child: Container(
-                                                  padding: EdgeInsets.all(0),
-                                                  width: MediaQuery.of(context).size.width - 30,
-                                                  child: ListTile(
-                                                    title: Text(
-                                                      fromlocation,
-                                                      overflow: TextOverflow.ellipsis,
-                                                      style: TextStyle(
-                                                          fontSize: 14),
-                                                    ),
-                                                    trailing:
-                                                    Icon(Icons.search),
-                                                    dense: true,
-                                                  )),
-                                            ),
-                                          ))),
-
-                                  CarouselSlider.builder(
-                                    options: CarouselOptions(
-                                      height: 200,
-                                      aspectRatio: 16 / 9,
-                                      viewportFraction: 0.8,
-                                      initialPage: 0,
-                                      enableInfiniteScroll: true,
-                                      reverse: false,
-                                      autoPlay: true,
-                                      autoPlayInterval:
-                                          const Duration(seconds: 3),
-                                      autoPlayAnimationDuration:
-                                          const Duration(milliseconds: 800),
-                                      autoPlayCurve: Curves.fastOutSlowIn,
-                                      enlargeCenterPage: true,
-                                      onPageChanged: null,
-                                      scrollDirection: Axis.horizontal,
-                                    ),
-                                    // itemCount: imageList.length,
-                                    itemCount: dashboard.offersList.isNotEmpty
-                                        ? dashboard.offersList.length
-                                        : imageList.length,
-                                    itemBuilder: (BuildContext context,
-                                        int index, int realIndex) {
-                                      return dashboard.offersList.isNotEmpty
-                                          ? CachedNetworkImage(
-                                              imageUrl: dashboard
-                                                  .offersList[index].image
-                                                  .toString(),
-                                              imageBuilder: (context,
-                                                      imageProvider) =>
-                                                  Container(
-                                                      height: 150,
-                                                      decoration: BoxDecoration(
-                                                        image: DecorationImage(
-                                                            image:
-                                                                imageProvider),
-                                                      )),
-                                              placeholder: (context, url) =>
-                                                  Shimmer.fromColors(
-                                                child:
-                                                    CircleAvatar(radius: 50.0),
-                                                baseColor: Colors.grey[300]!,
-                                                highlightColor:
-                                                    Colors.grey[400]!,
-                                              ),
-                                              errorWidget:
-                                                  (context, url, error) => Icon(
-                                                CupertinoIcons.person,
-                                                size: 50,
-                                              ),
-                                            )
-                                          : Container(
-                                              height: 150,
-                                              decoration: BoxDecoration(
-                                                image: DecorationImage(
-                                                  image: AssetImage(
-                                                    imageList[index],
-                                                  ),
-                                                ),
-                                              ),
-                                            );
-                                    },
-                                  ),
-
-                                  const SizedBox(height: 20),
-
-                                  Text(
-                                    'Customer Dashboard'.tr,
-                                    style: kTextStyle.copyWith(
-                                        color: kTitleColor,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18.0),
-                                  ),
-
-                                  const SizedBox(height: 10),
-
-                                  GridView.count(
-                                    crossAxisCount: 2,
-                                    crossAxisSpacing: 10.0,
-                                    childAspectRatio: 1.1,
-                                    mainAxisSpacing: 10.0,
-                                    shrinkWrap: true,
-                                    physics: const NeverScrollableScrollPhysics(),
-                                    children: List.generate(
-                                      4,
-                                      (i) {
-                                        return Card(
-                                          color: colorList[i],
-                                          elevation: 10,
-                                          shadowColor: kMainColor,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10.0),
-                                          ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(10.0),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                const SizedBox(height: 20),
-                                                Icon(
-                                                  iconList[i],
-                                                  size: 40,
-                                                  color:
-                                                      kMainColor /*kTitleColor*/,
-                                                ),
-                                                const SizedBox(height: 10.0),
-                                                Text(
-                                                  reportList[i],
-                                                  style: kTextStyle.copyWith(
-                                                      color:
-                                                          kMainColor /*kTitleColor*/,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                                const SizedBox(height: 10.0),
-                                                Text(
-                                                  i == 0
-                                                      ? dashboard
-                                                          .dashboardData.tParcel
-                                                          .toString()
-                                                      : i == 1
-                                                          ? dashboard
-                                                              .dashboardData
-                                                              .tDelivered
-                                                              .toString()
-                                                          : i == 2
-                                                              ? dashboard
-                                                                  .dashboardData
-                                                                  .tReturn
-                                                                  .toString()
-                                                              : i == 3
-                                                                  ? "${dashboard.dashboardData.tParcel! - (dashboard.dashboardData.tDelivered! + dashboard.dashboardData.tReturn!)}"
-                                                                  : '0',
-                                                  style: kTextStyle.copyWith(
-                                                      color:
-                                                          kMainColor /*kTitleColor*/,
-                                                      fontSize: 20.0,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                    if (dashboard.dashboardLoader)
+                      DashboardShimmer()
+                    else
+                      Container(
+                        padding: const EdgeInsets.all(10.0),
+                        decoration: const BoxDecoration(
+                          color: Color(0xFFf9f9fe),
+                          borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(30.0),
+                            topLeft: Radius.circular(30.0),
                           ),
+                        ),
+                        child: SingleChildScrollView(
+                          controller: ScrollController(),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              //search autoconplete input
+                              Positioned(
+                                  child: InkWell(
+                                      onTap: () async {
+                                        var place =
+                                        await PlacesAutocomplete.show(
+                                            context: context,
+                                            apiKey: googleApikey,
+                                            mode: Mode.overlay,
+                                            types: [],
+                                            strictbounds: false,
+                                            components: [
+                                              Component(
+                                                  Component.country, 'IN')
+                                            ],
+                                            //google_map_webservice package
+                                            onError: (err) {
+                                              print(err);
+                                            });
+
+                                        if (place != null) {
+                                          setState(() {
+                                            locationAddress =
+                                                place.description.toString();
+                                          });
+
+                                          //form google_maps_webservice package
+                                          final plist = GoogleMapsPlaces(
+                                            apiKey: googleApikey,
+                                            apiHeaders: await GoogleApiHeaders().getHeaders(),
+                                            //from google_api_headers package
+                                          );
+                                          String placeid = place.placeId ?? "0";
+                                          final detail = await plist
+                                              .getDetailsByPlaceId(placeid);
+                                          final geometry =
+                                          detail.result.geometry!;
+                                          final lat = geometry.location.lat;
+                                          final lang = geometry.location.lng;
+                                          var newlatlang = LatLng(lat, lang);
+
+                                          //move map camera to selected place with animation
+                                          mapController?.animateCamera(
+                                              CameraUpdate.newCameraPosition(
+                                                  CameraPosition(
+                                                      target: newlatlang,
+                                                      zoom: 17)));
+                                        }
+                                      },
+                                      child: Padding(
+                                        padding: EdgeInsets.all(10),
+                                        child: Card(
+                                          child: Container(
+                                              padding: EdgeInsets.all(0),
+                                              width: MediaQuery
+                                                  .of(context)
+                                                  .size
+                                                  .width -
+                                                  30,
+                                              child: ListTile(
+                                                title: Text(
+                                                  locationAddress,
+                                                  overflow:
+                                                  TextOverflow.ellipsis,
+                                                  style:
+                                                  TextStyle(fontSize: 14),
+                                                ),
+                                                trailing: Icon(Icons.search),
+                                                dense: true,
+                                              )),
+                                        ),
+                                      ))),
+
+                              Container(
+                                height: 250,
+                                width: 400,
+
+                                child: GoogleMap(
+                                  onMapCreated: _onMapCreated,
+                                  initialCameraPosition: CameraPosition(
+                                    target: LatLng(lat!,long!) /*_currentPosition*/,
+                                    zoom: 14.0,
+                                  ),
+                                ),
+                                /*GoogleMap(
+                                  zoomGesturesEnabled: true,
+                                 /* markers: {
+                                     const Marker( markerId: const MarkerId("India"),
+                                       position:  LatLng(Slati,Slongi),
+                                       infoWindow: InfoWindow(
+                                         title: "India",
+                                         snippet: "you are here",
+                                       ),
+                                     )
+                                   },*/
+                                  initialCameraPosition: CameraPosition(
+
+
+                                target: LatLng(Slati,Slongi) *//*startLocation*//*,
+                                    zoom: 14.0,
+                                  ),
+                                  mapType: MapType.normal,
+                                  onMapCreated: (controller) {
+                                    setState(() {
+                                      mapController = controller;
+                                    });
+                                  },
+                                ),*/
+                              ),
+
+                              Positioned(
+                                  child: InkWell(
+                                      onTap: () async {
+                                        var place = await PlacesAutocomplete.show(
+                                            context: context,
+                                            apiKey: googleApikey_2,
+                                            mode: Mode.overlay,
+                                            types: [],
+                                            strictbounds: false,
+                                            components: [
+                                              Component(Component.country, 'IN')
+                                            ],
+                                            //google_map_webservice package
+                                            onError: (err) {
+                                              print(err);
+                                            });
+
+                                        if (place != null) {
+                                          setState(() {
+                                            fromlocation =place.description.toString();
+                                            log("fromlocation ==> ${fromlocation.toString()}");
+                                          });
+
+                                          //form google_maps_webservice package
+                                          final plist = GoogleMapsPlaces(
+                                            apiKey: googleApikey_2,
+                                            apiHeaders: await GoogleApiHeaders().getHeaders(),
+                                            //from google_api_headers package
+                                          );
+                                          String placeid = place.placeId ?? "0";
+                                          final detail = await plist.getDetailsByPlaceId(placeid);
+                                          final geometry =
+                                          detail.result.geometry!;
+                                          final lat = geometry.location.lat;
+                                          final lang = geometry.location.lng;
+                                          var newlatlang = LatLng(lat, lang);
+
+                                          //move map camera to selected place with animation
+                                          mapController_2?.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: newlatlang, zoom: 17)));
+                                        }
+                                      },
+                                      child: Padding(
+                                        padding: EdgeInsets.all(10),
+                                        child: Card(
+                                          child: Container(
+                                              padding: EdgeInsets.all(0),
+                                              width: MediaQuery.of(context).size.width - 30,
+                                              child: ListTile(
+                                                title: Text(fromlocation, overflow:
+                                                  TextOverflow.ellipsis, style: TextStyle(fontSize: 14),
+
+                                                ),
+                                              //  subtitle: Text(fromlocation),
+                                                trailing: Icon(Icons.search),
+                                                dense: true,
+                                              )),
+                                        ),
+                                      ))),
+
+                              Container(height: 30, width: 150,
+                                alignment: Alignment.center,
+                                margin: EdgeInsets.only(left: 100),
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>  CreateParcel(),
+                                        settings: RouteSettings(
+                                          arguments: locationAddress+"123"+fromlocation,
+                                        ),
+                                      ),
+                                    );
+                                    },
+
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.orange,
+                                    elevation: 2,
+                                  ),
+                                  child: const Text(
+                                    'Create Parcel',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+
+
+                              CarouselSlider.builder(
+                                options: CarouselOptions(
+                                  height: 200,
+                                  aspectRatio: 16 / 9,
+                                  viewportFraction: 0.8,
+                                  initialPage: 0,
+                                  enableInfiniteScroll: true,
+                                  reverse: false,
+                                  autoPlay: true,
+                                  autoPlayInterval: const Duration(seconds: 3),
+                                  autoPlayAnimationDuration:
+                                  const Duration(milliseconds: 800),
+                                  autoPlayCurve: Curves.fastOutSlowIn,
+                                  enlargeCenterPage: true,
+                                  onPageChanged: null,
+                                  scrollDirection: Axis.horizontal,
+                                ),
+                                // itemCount: imageList.length,
+                                itemCount: dashboard.offersList.isNotEmpty ? dashboard.offersList.length : imageList.length,
+                                itemBuilder: (BuildContext context, int index, int realIndex) {
+                                  return dashboard.offersList.isNotEmpty ? CachedNetworkImage(
+                                    imageUrl: dashboard.offersList[index].image.toString(),
+                                    imageBuilder: (context, imageProvider) =>
+                                        Container(height: 150,
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(image: imageProvider),)),
+                                    placeholder: (context, url) =>
+                                        Shimmer.fromColors(
+                                          child: CircleAvatar(radius: 50.0),
+                                          baseColor: Colors.white/*grey[300]*/!,
+                                          highlightColor: Colors.white/*.grey[400]*/!,
+                                        ),
+                                    errorWidget: (context, url, error) =>
+                                        Icon(
+                                          CupertinoIcons.person,
+                                          size: 50,
+                                        ),
+                                  )
+                                      : Container(
+                                    height: 150,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: AssetImage(
+                                          imageList[index],
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+
+                              const SizedBox(height: 20),
+
+                              Text('Customer Dashboard'.tr,
+                                style: kTextStyle.copyWith(
+                                    color: kTitleColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18.0),
+                              ),
+
+                              const SizedBox(height: 10),
+
+                              GridView.count(
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 10.0,
+                                childAspectRatio: 1.1,
+                                mainAxisSpacing: 10.0,
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                children: List.generate(4, (i) {
+                                    return Card(
+                                      color: Colors.white/*colorList[i]*/,
+                                      elevation: 10,
+                                      shadowColor: kBorderColorTextField/*kMainColor*/,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10.0),
+                                      ),
+                                      child: Padding(padding: const EdgeInsets.all(10.0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                          children: [
+                                            const SizedBox(height: 20),
+                                            Icon(
+                                              iconList[i],
+                                              size: 40,
+                                              color: kMainColor /*kTitleColor*/,
+                                            ),
+                                            const SizedBox(height: 10.0),
+                                            Text(
+                                              reportList[i],
+                                              style: kTextStyle.copyWith(
+                                                  color:
+                                                  kMainColor /*kTitleColor*/,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            const SizedBox(height: 10.0),
+                                            Text(i == 0 ? dashboard
+                                                  .dashboardData.tParcel
+                                                  .toString()
+                                                  : i == 1
+                                                  ? dashboard.dashboardData
+                                                  .tDelivered
+                                                  .toString()
+                                                  : i == 2
+                                                  ? dashboard
+                                                  .dashboardData.tReturn.toString()
+                                                : i == 3 ? "${dashboard.dashboardData.tParcel! -
+                                                  (dashboard.dashboardData.tDelivered! + dashboard.dashboardData.tReturn!)}" : '0',
+                                              style: kTextStyle.copyWith(
+                                                  color:
+                                                  kMainColor /*kTitleColor*/,
+                                                  fontSize: 20.0,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                   ],
                 ),
               )),
     );
   }
+
 }
+
+
+
+
+
+
+
+
+
+
