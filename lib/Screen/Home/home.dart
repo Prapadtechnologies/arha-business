@@ -96,10 +96,11 @@ class _HomeState extends State<Home> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       extendBody: true,
       //specify the location of the FAB
+/*
       floatingActionButton: FloatingActionButton(
         autofocus: true,
         shape: CircleBorder(),
-        backgroundColor: Colors.orange,
+        backgroundColor: Colors.white,
       //  shape: RoundedRectangleBorder(),
         onPressed: () {
            // clickedCentreFAB = !clickedCentreFAB;
@@ -107,11 +108,12 @@ class _HomeState extends State<Home> {
         },
         tooltip: "Centre FAB",
         child: Container(
-          color: Colors.orange,
-          child: Icon(Icons.add,color: Colors.white),
+          color: Colors.white,
+          child: Icon(Icons.add,color: Colors.black),
         ),
        // elevation: 4.0,
       ),
+*/
 
       bottomNavigationBar: Container(
           clipBehavior: Clip.antiAlias,
@@ -123,18 +125,17 @@ class _HomeState extends State<Home> {
               color: Colors.white,
               boxShadow: [
                 BoxShadow(
-                    color: Colors.black12,
+                    color: Colors.grey,
                     blurRadius: 10,
                     offset: Offset(0, -1))
               ]),
           child: BottomBar(
-            backgroundColor: Colors.orange,
+            backgroundColor: Colors.white,
             //Color(0xFFFFFFFF),
             items: [
               /// Home
               BottomBarItem(
-                icon: const Icon(FontAwesomeIcons.house, size: 16.0,color: Colors.white,),
-/*
+                icon: const Icon(FontAwesomeIcons.house, size: 16.0),
                 title: Text(
                   "home".tr,
                   style: kTextStyle.copyWith(
@@ -142,9 +143,8 @@ class _HomeState extends State<Home> {
                       fontSize: 13,
                       fontWeight: FontWeight.w700),
                 ),
-*/
-                activeColor: kTitleColor,
-                inactiveColor: kTitleColor,
+                activeColor: kMainColor,
+                inactiveColor: grayColor,
               ),
 
               /// History
@@ -154,9 +154,7 @@ class _HomeState extends State<Home> {
                 backgroundColorOpacity: 0.1,
                 icon: const Icon(
                   FontAwesomeIcons.cartShopping,
-                  size: 16.0,color: Colors.white,
-                ),
-/*
+                  size: 16.0),
                 title: Text(
                   "parcel".tr,
                   style: kTextStyle.copyWith(
@@ -164,36 +162,35 @@ class _HomeState extends State<Home> {
                       fontSize: 13,
                       fontWeight: FontWeight.w700),
                 ),
-*/
-                activeColor: kTitleColor,
-                inactiveColor: kTitleColor,
+                activeColor: kMainColor,
+                inactiveColor: grayColor,
               ),
 
               BottomBarItem(
-                icon: const Icon(FontAwesomeIcons.clipboardList, size: 16.0,color: Colors.white,),
-               /* title: Text(
+                icon: const Icon(FontAwesomeIcons.clipboardList, size: 16.0),
+                title: Text(
                   "delivery_charges".tr,
                   style: kTextStyle.copyWith(
                       color: kTitleColor,
                       fontSize: 13,
                       fontWeight: FontWeight.w700),
-                ),*/
-                activeColor: kTitleColor,
-                inactiveColor: kTitleColor,
+                ),
+                activeColor: kMainColor,
+                inactiveColor: grayColor,
               ),
 
               /// Profile
               BottomBarItem(
-                icon: ImageIcon(AssetImage("assets/images/user.png")/*FontAwesomeIcons.user*/,size: 16.0,color: Colors.white,),
-              /*  title: Text(
+                icon: ImageIcon(AssetImage("assets/images/user.png")/*FontAwesomeIcons.user*/,size: 16.0),
+                title: Text(
                   "profile".tr,
                   style: kTextStyle.copyWith(
                       color: kTitleColor,
                       fontSize: 13,
                       fontWeight: FontWeight.w700),
-                ),*/
-                activeColor: kTitleColor,
-                inactiveColor: kTitleColor,
+                ),
+                activeColor: kMainColor,
+                inactiveColor: grayColor,
               ),
             ],
             onTap: (int index) {

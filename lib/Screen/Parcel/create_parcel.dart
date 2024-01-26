@@ -137,7 +137,7 @@ class _CreateParcelState extends State<CreateParcel> {
                           decoration: kInputDecoration.copyWith(
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             labelText: 'Your name'.tr,
-                            hintText: 'select_shop'.tr,
+                            hintText: 'Your name'.tr,
                             labelStyle: kTextStyle.copyWith(color: kTitleColor),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(5.0),
@@ -310,7 +310,7 @@ class _CreateParcelState extends State<CreateParcel> {
                           decoration: kInputDecoration.copyWith(
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             labelText: 'Select weight'.tr+'*',
-                            hintText: 'Select weight'.tr,
+                            hintText: 'select_weight'.tr,
                             labelStyle: kTextStyle.copyWith(color: kTitleColor),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(5.0),

@@ -10,7 +10,8 @@
     <application
         android:label="Arha Express"
         android:name="${applicationName}"
-        android:icon="@mipmap/logo_6">
+        android:icon="@mipmap/logo_6"
+        android:usesCleartextTraffic="true">
 
         <activity
             android:name=".MainActivity"

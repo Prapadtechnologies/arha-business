@@ -106,33 +106,16 @@ class _DashBoardState extends State<DashBoard> {
 
   DashboardController dashboardController = DashboardController();
   GlobalController globalController = GlobalController();
-  dynamic Slati;
-  dynamic Slongi;
+
 
   late GoogleMapController mapController;
 
-   LatLng? _currentPosition;
   var fromlocationdata ;
-   double? lat;
-   double? long;
+    double? lat;
+    double? long;
 
-  void set_location(double latitude, double longitude) async {
+   late LatLng know;
 
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.setDouble("C_Latitude", latitude);
-    sharedPreferences.setDouble("C_Longitude", longitude);
-    getSessionData();
-  }
-
-  void getSessionData() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    Slati = sharedPreferences.getDouble("C_Latitude");
-    Slongi = sharedPreferences.getDouble("C_Longitude");
-    log("SessionData ==> ${Slati}");
-    log("SessionData2 ==> ${Slongi}");
-
-    setState(() {});
-  }
 
   @override
   void initState() {
@@ -150,10 +133,10 @@ class _DashBoardState extends State<DashBoard> {
         margin: const EdgeInsets.only(bottom: 20, left: 20, right: 20),
       );
     });
+    getStackFlowLocation();
+
     // TODO: implement initState
     super.initState();
-    getSessionData();
-    getStackFlowLocation();
 
   }
 
@@ -168,21 +151,25 @@ class _DashBoardState extends State<DashBoard> {
     LatLng location = LatLng(lat, long);
 
     setState(() {
-      _currentPosition = location;
+      LatLng _currentPosition = location;
+if(_currentPosition!=null){
+  setup(_currentPosition);
 
-      setup(_currentPosition);
+}
     });
   }
 
   void setup(LatLng? currentPosition) {
-    lat = currentPosition!.latitude;
-    long = currentPosition!.longitude;
+        lat = currentPosition?.latitude;
+        long = currentPosition?.longitude;
 
   }
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
   }
+
+
 
   getLocation() async {
     LocationPermission permission = await Geolocator.checkPermission();
@@ -192,8 +179,6 @@ class _DashBoardState extends State<DashBoard> {
       Position currentposition = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
       startLocation = LatLng(currentposition.latitude as double, currentposition.longitude as double);
       startLocation_2 = LatLng(currentposition.latitude as double, currentposition.longitude as double);
-
-      set_location(currentposition.latitude,currentposition.longitude);
 
       log("Lat ==> ${currentposition.latitude.toString()}");
       log("Long ==> ${currentposition.longitude.toString()}");
@@ -214,13 +199,14 @@ class _DashBoardState extends State<DashBoard> {
     }
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     getLocation();
     selectedLang = languageController.languageList[languageController.languageList.indexWhere((i) => i.locale == Get.locale)];
     return Scaffold(
-      backgroundColor: kMainColor,
-
+      backgroundColor: kBgColor,
       drawer: Drawer(
         backgroundColor: kBgColor,
         child: SingleChildScrollView(
@@ -380,22 +366,31 @@ class _DashBoardState extends State<DashBoard> {
       ),
 
       appBar: AppBar(
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.black),
         titleSpacing: 0,
-        backgroundColor: kMainColor,
+        backgroundColor: kBgColor,
         elevation: 0.0,
-        title: Text(
-          'Arha Express' /*'${Get.find<GlobalController>().siteName}'*/,
+        title: Container(
+          height: 150,width: 300,
+          child: Row(  mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(Images.appLogo, fit: BoxFit.cover),
+            ],
+          ),
+        ),
+
+       /*Text(
+          'Arha Express' *//*'${Get.find<GlobalController>().siteName}'*//*,
           style: kTextStyle.copyWith(
               color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.bold),
-        ),
+        ),*/
       ),
 
       body: GetBuilder<DashboardController>(
           init: DashboardController(),
           builder: (dashboard) =>
               SingleChildScrollView(
-                padding: EdgeInsets.only(top: 10, bottom: 10),
+                padding: EdgeInsets.only(top: 5, bottom: 5),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -407,6 +402,13 @@ class _DashBoardState extends State<DashBoard> {
                         padding: const EdgeInsets.all(10.0),
                         decoration: const BoxDecoration(
                           color: Color(0xFFf9f9fe),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.orange,
+                              spreadRadius: 4,
+                              offset: Offset(0, 0),
+                            ),
+                          ],
                           borderRadius: BorderRadius.only(
                             topRight: Radius.circular(30.0),
                             topLeft: Radius.circular(30.0),
@@ -418,7 +420,7 @@ class _DashBoardState extends State<DashBoard> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               //search autoconplete input
-                              Positioned(
+                             Container(
                                   child: InkWell(
                                       onTap: () async {
                                         var place =
@@ -490,44 +492,27 @@ class _DashBoardState extends State<DashBoard> {
                                         ),
                                       ))),
 
+                              const SizedBox(height: 5),
+
                               Container(
                                 height: 250,
                                 width: 400,
-
                                 child: GoogleMap(
+                                  zoomGesturesEnabled: true,
+                                  mapType: MapType.normal,
                                   onMapCreated: _onMapCreated,
                                   initialCameraPosition: CameraPosition(
-                                    target: LatLng(lat!,long!) /*_currentPosition*/,
+                                    target: LatLng(lat!,long!),
                                     zoom: 14.0,
                                   ),
                                 ),
-                                /*GoogleMap(
-                                  zoomGesturesEnabled: true,
-                                 /* markers: {
-                                     const Marker( markerId: const MarkerId("India"),
-                                       position:  LatLng(Slati,Slongi),
-                                       infoWindow: InfoWindow(
-                                         title: "India",
-                                         snippet: "you are here",
-                                       ),
-                                     )
-                                   },*/
-                                  initialCameraPosition: CameraPosition(
-
-
-                                target: LatLng(Slati,Slongi) *//*startLocation*//*,
-                                    zoom: 14.0,
-                                  ),
-                                  mapType: MapType.normal,
-                                  onMapCreated: (controller) {
-                                    setState(() {
-                                      mapController = controller;
-                                    });
-                                  },
-                                ),*/
                               ),
 
-                              Positioned(
+                              const SizedBox(height: 5),
+
+                              //search autoconplete input
+
+                              Container(
                                   child: InkWell(
                                       onTap: () async {
                                         var place = await PlacesAutocomplete.show(
@@ -585,6 +570,8 @@ class _DashBoardState extends State<DashBoard> {
                                               )),
                                         ),
                                       ))),
+
+                              const SizedBox(height: 10),
 
                               Container(height: 30, width: 150,
                                 alignment: Alignment.center,
