@@ -517,6 +517,7 @@ class _ParcelPageState extends State<ParcelPage> {
           );
         });
   }
+
  double heightValue = 0.78;
   @override
   Widget build(BuildContext context) {
@@ -532,7 +533,7 @@ class _ParcelPageState extends State<ParcelPage> {
           style: kTextStyle.copyWith(color: kBgColor),
         ),
         actions: [
-          Card(
+          /*Card(
             elevation: 0,
             color: kMainColor,
             shape: RoundedRectangleBorder(
@@ -560,7 +561,7 @@ class _ParcelPageState extends State<ParcelPage> {
             ).onTap(
                   () => Get.to(() => CreateParcel()),
             ),
-          ),
+          ),*/
         ],
         backgroundColor: kMainColor,
         elevation: 0.0,

@@ -54,9 +54,7 @@ class AuthController extends GetxController {
     if (passValidator == null) {
       Map body = {'email': email, 'password': pass};
       String jsonBody = json.encode(body);
-      server
-          .postRequest(endPoint: APIList.login, body: jsonBody)
-          .then((response) {
+      server.postRequest(endPoint: APIList.login, body: jsonBody).then((response) {
         if (response != null && response.statusCode == 200) {
           updateFcmSubscribe(email);
           final jsonResponse = json.decode(response.body);
@@ -64,16 +62,11 @@ class AuthController extends GetxController {
           var bearerToken = 'Bearer ' + "${loginData.data?.token}";
           userService.saveBoolean(key: 'is-user', value: true);
           userService.saveString(key: 'token', value: loginData.data?.token);
-          userService.saveString(
-              key: 'user-id', value: loginData.data!.user?.id.toString());
-          userService.saveString(
-              key: 'email', value: loginData.data!.user!.email.toString());
-          userService.saveString(
-              key: 'image', value: loginData.data!.user!.image.toString());
-          userService.saveString(
-              key: 'name', value: loginData.data!.user!.name.toString());
-          userService.saveString(
-              key: 'phone', value: loginData.data!.user!.phone.toString());
+          userService.saveString(key: 'user-id', value: loginData.data!.user?.id.toString());
+          userService.saveString(key: 'email', value: loginData.data!.user!.email.toString());
+          userService.saveString(key: 'image', value: loginData.data!.user!.image.toString());
+          userService.saveString(key: 'name', value: loginData.data!.user!.name.toString());
+          userService.saveString(key: 'phone', value: loginData.data!.user!.phone.toString());
 
           Server.initClass(token: bearerToken);
           Get.put(GlobalController()).initController();
@@ -84,10 +77,7 @@ class AuthController extends GetxController {
             update();
           });
           Get.off(() => const Home());
-          Get.rawSnackbar(
-              message: "${loginData.message}",
-              backgroundColor: Colors.green,
-              snackPosition: SnackPosition.TOP);
+          Get.rawSnackbar(message: "${loginData.message}", backgroundColor: Colors.green, snackPosition: SnackPosition.TOP);
 
         } else {
           loader = false;
@@ -95,10 +85,7 @@ class AuthController extends GetxController {
             update();
           });
           final jsonResponse = json.decode(response.body);
-          Get.rawSnackbar(
-              message: "${jsonResponse['message']}",
-              backgroundColor: Colors.red,
-              snackPosition: SnackPosition.TOP);
+          Get.rawSnackbar(message: "${jsonResponse['message']}", backgroundColor: Colors.red, snackPosition: SnackPosition.TOP);
         }
       });
     } else {
@@ -264,8 +251,7 @@ class AuthController extends GetxController {
       "topic": email,
     };
     String jsonBody = json.encode(body);
-    server
-        .postRequest(endPoint: APIList.fcmSubscribe, body: jsonBody)
+    server.postRequest(endPoint: APIList.fcmSubscribe, body: jsonBody)
         .then((response) {
       if (response != null && response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);

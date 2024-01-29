@@ -116,7 +116,6 @@ class _DashBoardState extends State<DashBoard> {
 
    late LatLng know;
 
-
   @override
   void initState() {
     FirebaseMessaging.instance
@@ -162,14 +161,11 @@ if(_currentPosition!=null){
   void setup(LatLng? currentPosition) {
         lat = currentPosition?.latitude;
         long = currentPosition?.longitude;
-
   }
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
   }
-
-
 
   getLocation() async {
     LocationPermission permission = await Geolocator.checkPermission();
@@ -198,8 +194,6 @@ if(_currentPosition!=null){
       print("LocationAddress ==> ${locationAddress}");
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -371,6 +365,7 @@ if(_currentPosition!=null){
         backgroundColor: kBgColor,
         elevation: 0.0,
         title: Container(
+          padding: EdgeInsets.only(bottom: 10,),
           height: 150,width: 300,
           child: Row(  mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -378,12 +373,6 @@ if(_currentPosition!=null){
             ],
           ),
         ),
-
-       /*Text(
-          'Arha Express' *//*'${Get.find<GlobalController>().siteName}'*//*,
-          style: kTextStyle.copyWith(
-              color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.bold),
-        ),*/
       ),
 
       body: GetBuilder<DashboardController>(
@@ -737,7 +726,6 @@ if(_currentPosition!=null){
               )),
     );
   }
-
 }
 
 

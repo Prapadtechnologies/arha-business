@@ -51,9 +51,9 @@ class _ParcelDetailsState extends State<ParcelDetails> {
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: GetBuilder<ParcelController>(
-      init: ParcelController(),
-    builder: (parcelLogs) =>
-      Container(
+       init: ParcelController(),
+       builder: (parcelLogs) =>
+       Container(
           padding: const EdgeInsets.all(10.0),
           margin: EdgeInsets.only(top: 20),
           decoration: const BoxDecoration(
@@ -67,10 +67,10 @@ class _ParcelDetailsState extends State<ParcelDetails> {
           Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-          Padding(
-          padding: const EdgeInsets.symmetric(
+           Padding(
+            padding: const EdgeInsets.symmetric(
               vertical: 8, horizontal: 20),
-          child: Row(
+           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GestureDetector(
@@ -90,8 +90,7 @@ class _ParcelDetailsState extends State<ParcelDetails> {
                   )
                       : BoxDecoration(
                     color: Colors.white,
-                    borderRadius:
-                    BorderRadius.circular(40),
+                    borderRadius: BorderRadius.circular(40),
                     border: Border.fromBorderSide(
                       BorderSide(
                         color: kMainColor,
@@ -146,14 +145,15 @@ class _ParcelDetailsState extends State<ParcelDetails> {
           ),
         ),
         SizedBox(height: 10),
-        SizedBox(
-          height: MediaQuery.of(context).size.height * 0.76,
+        Container(height: MediaQuery.of(context).size.height * 0.69,
+
+
+         /* height: 610*/
           child: SingleChildScrollView(
-              child:
-              statusActive == 1
-                  ?
+            padding: EdgeInsets.only(top: 5, bottom: 10),
+              child: statusActive == 1 ?
             Column(
-              mainAxisSize: MainAxisSize.min,
+              mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 10),
@@ -190,7 +190,7 @@ class _ParcelDetailsState extends State<ParcelDetails> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 10.0),
+                const SizedBox(height: 15.0),
                 Text(
                   'cash_of_delivery'.tr,
                   style: kTextStyle.copyWith(color: kTitleColor, fontSize: 18.0, fontWeight: FontWeight.bold),
@@ -590,9 +590,9 @@ class _ParcelDetailsState extends State<ParcelDetails> {
                                                           ],
                                                         ),
                                                       ),
-                                                      endChild: Padding(
+                                                       endChild: Padding(
                                                         padding: const EdgeInsets.only(
-                                                            top: 20.0, left: 10.0),
+                                                            top: 20.0, left: 10.0,bottom: 10),
                                                         child: Column(
                                                           crossAxisAlignment: CrossAxisAlignment.start,
                                                           children: [
@@ -725,7 +725,7 @@ class _ParcelDetailsState extends State<ParcelDetails> {
                                 ),
 
                                 const SizedBox(
-                                  height: 40.0,
+                                  height: 50.0,
                                 ),
                               ],
                             ),

@@ -50,6 +50,7 @@ class _ProfileState extends State<Profile> {
             iconTheme: const IconThemeData(color: kBgColor),
           ),
           body: Container(
+            height: MediaQuery.of(context).size.height * 0.89,
             clipBehavior: Clip.antiAlias,
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
@@ -81,7 +82,7 @@ class _ProfileState extends State<Profile> {
                                 SizedBox(
                                   child: Column(children: [
                                     const SizedBox(
-                                      height: 10,
+                                      height: 20,
                                     ),
                                     Stack(
                                       children: [
@@ -139,7 +140,7 @@ class _ProfileState extends State<Profile> {
                                       ],
                                     ),
                                     const SizedBox(
-                                      height: 16,
+                                      height: 20,
                                     ),
                                      Text(
                                       profile.profileUser.name.toString(),
@@ -242,13 +243,9 @@ class _ProfileState extends State<Profile> {
                                           ),
                                         ],
                                       ),
-                                      SizedBox(
-                                        height: 14.h,
-                                      ),
                                     ],
                                   ),
                                 ),
-                                SizedBox(height: 90,),
                               ],
                             ),
                           ),

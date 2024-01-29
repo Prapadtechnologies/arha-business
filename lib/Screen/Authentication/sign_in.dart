@@ -34,53 +34,16 @@ class _SignInState extends State<SignIn> {
     sizeConfig.init(context);
     return GetBuilder<AuthController>(
         init: AuthController(),
-    builder: (auth) =>
-      SafeArea(
-      child: Scaffold(
+        builder: (auth) =>
+      SafeArea(child: Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: kMainColor,
         body: Stack(children: [
          Center(child:
           Column(
           children: [
-            const SizedBox(height: 80,
-            ),
-            /*Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const SizedBox(height: 100,
-                ),
-                Container(margin: EdgeInsetsDirectional.only(top: 100),),
-
-                Image.asset(
-                  'assets/images/logo.png',
-                  width: 200,
-                  height: 100,
-                ),
-              ],
-            ),*/
-           /* Positioned(
-              left: 10,
-              top: 10,
-              bottom: 10,
-              child: Image.asset(
-                'assets/images/logo.png',
-              ),
-            ),*/
-           /*Container(
-                padding: EdgeInsets.only(top: 100),
-                decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(Images.appLogo),
-                  fit: BoxFit.contain,
-                ),
-              ),
-              ),*/
-              //Image.asset('assets/logo.png'),
-           // ),
-
+            const SizedBox(height: 80,),
             Expanded(
-
               child: Container(
                 decoration: const BoxDecoration(
                   color: Colors.white,
@@ -88,11 +51,9 @@ class _SignInState extends State<SignIn> {
                     topLeft: Radius.circular(30.0),
                     topRight: Radius.circular(30.0),
                   ),
-
                 ),
 
-                child: Padding(
-                  padding: const EdgeInsets.all(5.0),
+                child: Padding(padding: const EdgeInsets.all(5.0),
 
                   child:  Form(
                     key: _formKey,
@@ -150,8 +111,7 @@ class _SignInState extends State<SignIn> {
                         ),
                       ),
                       const SizedBox(height: 10.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                      Row(mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Checkbox(
                             activeColor: kMainColor,
@@ -167,20 +127,12 @@ class _SignInState extends State<SignIn> {
                               );
                             },
                           ),
-                          Text(
-                            'remember_me'.tr,
+                          Text('remember_me'.tr,
                             style: kTextStyle.copyWith(
                                 color: kTitleColor,
                                 fontWeight: FontWeight.bold),
                           ),
                           const Spacer(),
-                          // Text(
-                          //   'forgot_password'.tr,
-                          //   style: kTextStyle.copyWith(
-                          //       color: kMainColor, fontWeight: FontWeight.bold),
-                          // ).onTap(
-                          //   () => const ForgotPassword().launch(context),
-                          // ),
                         ],
                       ),
                       const SizedBox(height: 30.0),
@@ -189,9 +141,10 @@ class _SignInState extends State<SignIn> {
                           buttonDecoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(30.0),
                               color: kMainColor),
-                          onPressed: () async {
+                              onPressed: () async {
                               if (_formKey.currentState!.validate()) {
-                                auth.loginOnTap(email: _emailController.text.toString().trim(), pass: _passwordController.text.toString().trim());
+                                auth.loginOnTap(email: _emailController.text.toString().trim(),
+                                    pass: _passwordController.text.toString().trim());
                               }
                           },
                          ),
@@ -219,7 +172,7 @@ class _SignInState extends State<SignIn> {
         ),
           auth.loader
               ? Positioned(
-            child: Container(
+               child: Container(
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
                 color: Colors.white60,
