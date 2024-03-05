@@ -148,7 +148,7 @@ class _SignInState extends State<SignIn> {
                               }
                           },
                          ),
-                      const SizedBox(height: 10.0),
+                     /* const SizedBox(height: 10.0),
                       RichText(
                         text: TextSpan(
                           text: 'dont_have_an_account'.tr,
@@ -161,7 +161,7 @@ class _SignInState extends State<SignIn> {
                         ),
                       ).onTap(
                         () => Get.off(SignUp()),
-                      ),
+                      ),*/
                     ],
                   ),)
                 ),

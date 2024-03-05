@@ -7,6 +7,25 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:696555057769:android:c7a9bce37902a53802a8f8",
+        "android_client_info": {
+          "package_name": "com.prapadtech.arhabusiness"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2lXnXLx2IFT5LoGQATs8VefD-LhYyobE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:696555057769:android:13fa3d05f669fc7602a8f8",
         "android_client_info": {
           "package_name": "com.prapadtech.courier.customerservice"

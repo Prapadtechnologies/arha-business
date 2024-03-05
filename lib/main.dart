@@ -13,7 +13,7 @@ Future<void> main() async {
   final box = GetStorage();
   WidgetsFlutterBinding.ensureInitialized();
   const firebaseOptions = FirebaseOptions(
-    appId: '1:696555057769:android:13fa3d05f669fc7602a8f8',
+    appId: '1:696555057769:android:c7a9bce37902a53802a8f8',
     apiKey: 'AIzaSyA2lXnXLx2IFT5LoGQATs8VefD-LhYyobE',
     projectId: 'courier-8637f',
     messagingSenderId: '696555057769',
@@ -60,7 +60,7 @@ class MyApp extends StatelessWidget {
               debugShowCheckedModeBanner: false,
               translations: Languages(),
               locale: lang,
-              title: 'Arha Merchant',
+              title: 'Arha Business',
               theme: ThemeData(fontFamily: 'Display'),
               home: const SplashScreen(),
             )));

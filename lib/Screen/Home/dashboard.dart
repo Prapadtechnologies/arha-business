@@ -409,7 +409,7 @@ if(_currentPosition!=null){
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               //search autoconplete input
-                             Container(
+                            /* Container(
                                   child: InkWell(
                                       onTap: () async {
                                         var place =
@@ -591,7 +591,7 @@ if(_currentPosition!=null){
                                       ),
                                     ),
                                   ),
-                              ),
+                              ),*/
 
                               CarouselSlider.builder(
                                 options: CarouselOptions(
@@ -646,7 +646,7 @@ if(_currentPosition!=null){
 
                               const SizedBox(height: 20),
 
-                              Text('Customer Dashboard'.tr,
+                              Text('Business Dashboard'.tr,
                                 style: kTextStyle.copyWith(
                                     color: kTitleColor,
                                     fontWeight: FontWeight.bold,
