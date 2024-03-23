@@ -152,7 +152,7 @@ class _DashboardShimmerState extends State<DashboardShimmer> {
             baseColor: Colors.grey[300]!,
             child:
               Text(
-                'merchant_dashboard'.tr,
+                'business_dashboard'.tr,
                 style: kTextStyle.copyWith(
                     color: kTitleColor,
                     fontWeight: FontWeight.bold,

@@ -45,7 +45,7 @@ class _DeliveryChargeShimmerState extends State<DeliveryChargeShimmer> {
                               child:
                           Card(
                         color: kBgColor,
-                        elevation: 10,
+                        elevation: 1,
                         shape: RoundedRectangleBorder(
                           borderRadius:
                           BorderRadius.circular(7.0),

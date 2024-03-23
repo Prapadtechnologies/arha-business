@@ -12,8 +12,6 @@ class SupportsController extends GetxController {
   bool loader = true;
   List<Supports> supportList = <Supports>[];
 
-
-
   @override
   void onInit() {
     getSupport();
@@ -49,8 +47,6 @@ class SupportsController extends GetxController {
       }
     });
   }
-
-
 
   supportDelete(id) {
     server
@@ -96,9 +92,7 @@ class SupportsController extends GetxController {
     };
     String jsonBody = json.encode(body);
     print(jsonBody);
-    server
-        .postRequestWithToken(endPoint: APIList.supportAdd, body: jsonBody)
-        .then((response) {
+    server.postRequestWithToken(endPoint: APIList.supportAdd, body: jsonBody).then((response) {
       final jsonResponse = json.decode(response.body);
       print(jsonResponse);
       if (response != null && response.statusCode == 200) {

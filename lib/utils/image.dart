@@ -1,5 +1,6 @@
 class Images {
   static String get appLogo => 'assets/images/logo.png';
+  static String get arhaM =>'assets/images/arha_m.png';
   static String get banner1 =>  'assets/images/banner1.png';
   static String get banner2 =>  'assets/images/banner2.png';
   static String get banner3 =>   'assets/images/banner3.png';
@@ -28,4 +29,7 @@ class Images {
   static String get item1 => 'assets/images/item.png';
   static String get addons1 => 'assets/images/addons.png';
   static String get imageCustomer => 'assets/images/customer.png';
+  static String get request => 'assets/icons/request.png';
+
+
 }

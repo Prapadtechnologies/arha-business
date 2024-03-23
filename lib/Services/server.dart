@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import '/Services/api-list.dart';
 
 class Server {
@@ -7,16 +8,16 @@ class Server {
 
   static initClass({String? token}) {
     bearerToken = token!;
+    print("initToken ==> ${bearerToken}");
+
   }
 
   getRequest({String? endPoint}) async {
     HttpClient client = HttpClient();
     print('$endPoint $bearerToken');
     try {
-      client.badCertificateCallback =
-          ((X509Certificate cert, String host, int port) => true);
-      return await http.get(Uri.parse(endPoint!),
-          headers: _getHttpHeaders());
+      client.badCertificateCallback = ((X509Certificate cert, String host, int port) => true);
+      return await http.get(Uri.parse(endPoint!), headers: _getHttpHeaders());
     } catch (error) {
       return null;
     } finally {
@@ -24,8 +25,6 @@ class Server {
     }
   }
 
-
-  
   getRequestNotToken({String? endPoint}) async {
     HttpClient client = HttpClient();
     try {
@@ -87,8 +86,7 @@ class Server {
   postRequestWithToken({String? endPoint, String? body}) async {
     HttpClient client = HttpClient();
     try {
-      client.badCertificateCallback =
-          ((X509Certificate cert, String host, int port) => true);
+      client.badCertificateCallback = ((X509Certificate cert, String host, int port) => true);
       return await http.post(Uri.parse(endPoint!),
           headers: _getHttpHeaders(), body: body);
     } catch (error) {
@@ -170,13 +168,16 @@ class Server {
     }
   }
 
+
   static Map<String, String> _getHttpHeaders() {
     Map<String, String> headers = new Map<String, String>();
     headers['Authorization'] = bearerToken!;
     headers['apiKey'] = APIList.apiCheckKey!;
     headers['content-type'] = 'application/json';
+    print("Token ==> ${bearerToken!}");
     return headers;
   }
+
   static Map<String, String> _getHttpHeadersNotToken() {
     Map<String, String> headers = new Map<String, String>();
     headers['apiKey'] = APIList.apiCheckKey!;

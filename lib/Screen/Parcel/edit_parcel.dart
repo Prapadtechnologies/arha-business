@@ -63,27 +63,27 @@ class _EditParcelState extends State<EditParcel> {
     SizeConfigCustom sizeConfig = SizeConfigCustom();
     sizeConfig.init(context);
     return Scaffold(
-      backgroundColor: kMainColor,
-      appBar: AppBar(
-        titleSpacing: 0,
-        title: Text(
-          'edit_parcel'.tr,
-          style: kTextStyle.copyWith(color: kTitleColor),
-        ),
-        leading: IconButton(
-            onPressed: () {
-              Get.back();
-              Get.find<ParcelController>().clearAll();
-            },
-            icon: Icon(
-              Icons.arrow_back,
-              color: kTitleColor,
-            )),
-
         backgroundColor: kMainColor,
-        elevation: 0.0,
-        iconTheme: const IconThemeData(color: kBgColor),
-      ),
+        appBar: AppBar(
+          titleSpacing: 0,
+          title: Text(
+            'edit_parcel'.tr,
+            style: kTextStyle.copyWith(color: kTitleColor),
+          ),
+          leading: IconButton(
+              onPressed: () {
+                Get.back();
+                Get.find<ParcelController>().clearAll();
+              },
+              icon: Icon(
+                Icons.arrow_back,
+                color: kTitleColor,
+              )),
+
+          backgroundColor: kMainColor,
+          elevation: 0.0,
+          iconTheme: const IconThemeData(color: kBgColor),
+        ),
       body:  GetBuilder<ParcelEDitController>(
       init: ParcelEDitController(),
     builder: (parcel) =>

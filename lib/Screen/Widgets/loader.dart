@@ -14,18 +14,17 @@ class LoaderCircle extends StatelessWidget {
         Container(
           height: block * 20,
           width: block * 20,
-          decoration:
-              const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
+          decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
           child: Center(
             child: Container(
               height: block * 15,
               width: block * 15,
               decoration: const BoxDecoration(
-                  color: kMainColor, shape: BoxShape.circle),
+                  color: Colors.transparent/*kMainColor*/, shape: BoxShape.circle),
               child: Center(
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(50),
-                  child: Image.asset(Images.appLogo,
+                  child: Image.asset(Images.arhaM,
                       height: block * 20, width: block * 20),
                 ),
               ),

@@ -1,10 +1,8 @@
 
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../Models/hubs_model.dart';
 import '../Models/profile_model.dart';
 import '../Models/settings_model.dart';

@@ -1,5 +1,6 @@
+
+import '../../utils/image.dart';
 import '/Models/parcels_model.dart';
-import '/Screen/Parcel/create_parcel.dart';
 import '/Screen/Parcel/parcel_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
@@ -7,11 +8,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-
+import '../Home/home.dart';
 import '../../Controllers/global-controller.dart';
 import '../../Controllers/parcel_controller.dart';
 import '../Widgets/constant.dart';
 import '../Widgets/shimmer/parcel_shimmer.dart';
+import 'bargainParcelPrice.dart';
 
 class ParcelPage extends StatefulWidget {
   final double height;
@@ -44,15 +46,7 @@ class _ParcelPageState extends State<ParcelPage> {
     }
   }
 
-  List<String> date = [
-    'Today',
-    'Yesterday',
-    'Last 7 Days',
-    'Last 30 Days',
-    'This Month',
-    'Last Month',
-    'Custom Range',
-  ];
+  List<String> date = ['Today', 'Yesterday', 'Last 7 Days', 'Last 30 Days', 'This Month', 'Last Month', 'Custom Range'];
   String selectDate = 'Today';
 
   DropdownButton<String> setDate() {
@@ -82,6 +76,7 @@ class _ParcelPageState extends State<ParcelPage> {
     'pickup_re_schedule_cancel'.tr,
     'pickup_re_schedule'.tr,
   ];
+
   String selectStatus = 'pending'.tr;
 
   DropdownButton<String> setStatus() {
@@ -518,68 +513,61 @@ class _ParcelPageState extends State<ParcelPage> {
         });
   }
 
- double heightValue = 0.78;
+ double heightValue = 0.98;
   @override
   Widget build(BuildContext context) {
-      setState(() {
+   setState(() {
         heightValue = widget.height;
       });
 
     return Scaffold(
-      backgroundColor: kMainColor,
+      backgroundColor: kBgColor,
       appBar: AppBar(
-        title: Text(
-          'parcel_list'.tr,
-          style: kTextStyle.copyWith(color: kBgColor),
+        titleSpacing: 0,
+        title:Container(
+          padding: EdgeInsets.only(bottom: 5,),
+          height: 100,width: 275,
+          child: Row(  mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(Images.appLogo, fit: BoxFit.cover),
+            ],
+          ),
         ),
-        actions: [
-          /*Card(
-            elevation: 0,
-            color: kMainColor,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(2.0),
-            ),
-            child: Container(
-              padding: const EdgeInsets.all(11),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(2.0),
-              ),
-              child: Row(
-                children: [
-                  const Icon(
-                    FontAwesomeIcons.plus,
-                    color: kBgColor,
-                    size: 16.0,
-                  ),
-                  const SizedBox(width: 4.0),
-                  Text(
-                    'add'.tr,
-                    style: kTextStyle.copyWith(color: kBgColor, fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-            ).onTap(
-                  () => Get.to(() => CreateParcel()),
-            ),
-          ),*/
-        ],
-        backgroundColor: kMainColor,
-        elevation: 0.0,
-        iconTheme: const IconThemeData(color: kBgColor),
-      ),
+        leading: IconButton(
+            onPressed: () {
+              Get.back();
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => Home()));
+              Get.find<ParcelController>().clearAll();
+            },
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.black,
+            )),
 
+        backgroundColor: kBgColor,
+        elevation: 0.0,
+        iconTheme: const IconThemeData(color: Colors.white),
+
+      ),
       body: GetBuilder<ParcelController>(
           init: ParcelController(),
           builder: (parcel) => Container(
-              padding: const EdgeInsets.all(8.0),
-              margin: EdgeInsets.only(top: 8),
+              padding: const EdgeInsets.only(left: 10.0, right: 10.0,top: 5, bottom: 5),
+              margin: EdgeInsets.only(top: 5),
               height: MediaQuery.of(context).size.height,
               decoration: const BoxDecoration(
+                color: Color(0xFFf9f9fe),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.orange,
+                    spreadRadius: 4,
+                    offset: Offset(0, 0),
+                  ),
+                ],
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30.0),
                   topRight: Radius.circular(30.0),
+                  topLeft: Radius.circular(30.0),
                 ),
-                color: Colors.white,
               ),
               child:
               Column(
@@ -610,7 +598,7 @@ class _ParcelPageState extends State<ParcelPage> {
                                                     color: Colors.white,
                                                     border: Border.all(color: itembg)),
                                                 child: Padding(
-                                                  padding: EdgeInsets.all(8.r),
+                                                  padding: EdgeInsets.all(5.r),
                                                   child:
                                                   Row(
                                                       mainAxisAlignment: MainAxisAlignment.start,
@@ -625,7 +613,7 @@ class _ParcelPageState extends State<ParcelPage> {
                                                             children: [
                                                               Padding(
                                                                 padding:
-                                                                EdgeInsets.only(top: 6.h, bottom: 10.h),
+                                                                EdgeInsets.only(top: 6.h, bottom: 5.h),
                                                                 child: Row(
                                                                   children: [
                                                                     Text(
@@ -679,7 +667,7 @@ class _ParcelPageState extends State<ParcelPage> {
                                                                     color: Colors.grey),
                                                               ),
                                                               SizedBox(
-                                                                height: 8.h,
+                                                                height: 5.h,
                                                               ),
                                                               Text(
                                                                 parcel.parcelList[index].customerAddress.toString(),
@@ -688,9 +676,8 @@ class _ParcelPageState extends State<ParcelPage> {
                                                                     fontWeight: FontWeight.w400,
                                                                     color: Colors.grey),
                                                               ),
-                                                              SizedBox(
-                                                                height: 8.h,
-                                                              ),
+
+                                                               SizedBox(height: 5.h,),
                                                               Row(
                                                                 mainAxisAlignment: MainAxisAlignment.center,
                                                                 children: [
@@ -702,7 +689,7 @@ class _ParcelPageState extends State<ParcelPage> {
                                                                   ),
                                                                   Text(
                                                                     " ${Get.find<GlobalController>()
-                                                                        .currency!}${parcel.parcelList[index].cashCollection.toString()}",
+                                                                        .currency!}${parcel.parcelList[index].totalDeliveryAmount.toString()}",
                                                                   ),
                                                                   const Spacer(),
                                                                   Text(
@@ -719,6 +706,43 @@ class _ParcelPageState extends State<ParcelPage> {
                                                                   ),
                                                                 ],
                                                               ),
+
+                                                              SizedBox(height: 5.h,),
+
+                                                              Container(height: 30, width: 150,
+                                                                alignment: Alignment.center,
+                                                                margin: EdgeInsets.only(left: 100),
+                                                                child: ElevatedButton(
+                                                                  onPressed: () {
+                                                                    Navigator.push(
+                                                                      context,
+                                                                      MaterialPageRoute(
+                                                                        builder: (context) => /* ChatScreen()*/ BargainParcelPrice(),
+                                                                        settings: RouteSettings(
+                                                                          arguments: '${Get.find<GlobalController>().currency!}${parcel.parcelList[index].totalDeliveryAmount.toString()}',
+                                                                        ),
+                                                                      ),
+                                                                    );
+                                                                  },
+
+                                                                  style: ElevatedButton.styleFrom(
+                                                                    backgroundColor: Colors.orange,
+                                                                    elevation: 2,
+                                                                  ),
+                                                                  child: const Text(
+                                                                    'Bargain',
+                                                                    style: TextStyle(
+                                                                      fontSize: 12,
+                                                                      fontWeight: FontWeight.bold,
+                                                                      color: Colors.white,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+
+                                                              SizedBox(height: 5.h,),
+
+
                                                             ],
                                                           ),
                                                         )

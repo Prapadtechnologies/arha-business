@@ -24,9 +24,9 @@ class ProfileController extends GetxController {
   bool commonLoader = false;
   bool loader = false;
   bool passwordLoader = false;
-  late ProfileUserData profileUser;
+/*  late ProfileUserData profileUser;
   late MerchantProfile profileMerchant;
-  late ProfileHub profileHub;
+  late ProfileHub profileHub;*/
   late String name='',email='',address='',mobile='',image='',businessName='';
 
   @override
@@ -41,15 +41,15 @@ class ProfileController extends GetxController {
         profileLoader = false;
         final jsonResponse = json.decode(response.body);
         var profileData = ProfileModel.fromJson(jsonResponse);
-        profileUser = profileData.data!.user!;
+        // profileUser = profileData.data!.user!;
         name = profileData.data!.user!.name!;
         image = profileData.data!.user!.image!;
         mobile = profileData.data!.user!.phone!;
         email = profileData.data!.user!.email.toString();
         address = profileData.data!.user!.address.toString();
-        businessName = profileData.data!.user!.merchant!.businessName!;
-        profileHub = profileData.data!.user!.hub!;
-        profileMerchant = profileData.data!.user!.merchant!;
+        //  businessName = profileData.data!.user!.merchant!.businessName!;
+        //  profileHub = profileData.data!.user!.hub!;
+        //  profileMerchant = profileData.data!.user!.merchant!;
         Future.delayed(Duration(milliseconds: 10), () {
           update();
         });
@@ -69,20 +69,13 @@ class ProfileController extends GetxController {
     });
     Map<String, String> body = {
       'name': nameController.text,
-      'address': addressController.text,
-      'business_name': businessNameController.text,
+      'address': ""/*addressController.text*/,
+      'business_name': ""/*businessNameController.text*/,
       'email': emailController.text,
       'mobile': phoneController.text,
     };
-  print(filepath);
-    server
-        .multipartRequest(
-            endPoint: APIList.profileUpdate,
-            body: body,
-            filepath: filepath,
-            nidPath: nidpath,
-            tradeLicensepath: tradepath,
-            type: type)
+    print(filepath);
+    server.multipartRequest(endPoint: APIList.profileUpdate, body: body, filepath: filepath, nidPath: nidpath, tradeLicensepath: tradepath, type: type)
         .then((response) {
       print(response);
       if (response != null && response.statusCode == 200) {
@@ -92,6 +85,8 @@ class ProfileController extends GetxController {
         addressController.clear();
         phoneController.clear();
         loader = false;
+        Get.rawSnackbar(message: "${response.message}",backgroundColor: Colors.green, snackPosition: SnackPosition.BOTTOM);
+
         getUserProfile();
         Future.delayed(Duration(milliseconds: 10), () {
           update();
@@ -143,7 +138,7 @@ class ProfileController extends GetxController {
         } else if (jsonResponse['message']['password_confirmation'] != null) {
           Get.rawSnackbar(
               message:
-                  jsonResponse['message']['password_confirmation'].toString());
+              jsonResponse['message']['password_confirmation'].toString());
         }
         passwordLoader = false;
         Future.delayed(Duration(milliseconds: 10), () {

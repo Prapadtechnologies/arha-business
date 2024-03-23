@@ -105,6 +105,7 @@ class _PaymentAccState extends State<PaymentAcc> {
                                                 BorderRadius.circular(20.0),
                                                 color: kMainColor,
                                               ),
+
                                               child: Text(
                                                 '${account.accountList[index].paymentMethodName ?? ''}'.tr,
                                                 style: kTextStyle.copyWith(

@@ -34,8 +34,7 @@ class ParcelsModel {
 }
 
 class Data {
-  Data({
-      List<Parcels>? parcels,}){
+  Data({List<Parcels>? parcels,}){
     _parcels = parcels;
 }
 

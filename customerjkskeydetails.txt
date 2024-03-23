@@ -1,3 +1,0 @@
-Key store pass : Arhacustomer
-Alias : key0
-key password : Arhacustomer

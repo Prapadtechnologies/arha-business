@@ -44,7 +44,7 @@ class _ParcelLogState extends State<ParcelLog> {
               FeatherIcons.x,
               color: kDarkWhite,
             ).onTap(
-              () => Navigator.pop(context),
+                  () => Navigator.pop(context),
             ),
           ),
         ],

@@ -1,4 +1,5 @@
 
+import '../../utils/image.dart';
 import '/Screen/Support/reply.dart';
 import '/Screen/Support/support_add.dart';
 import '/Screen/Support/support_edit.dart';
@@ -38,30 +39,35 @@ class _SupportState extends State<Support> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kMainColor,
+      backgroundColor: kBgColor,
       appBar: AppBar(
-        title: Text(
-          'support'.tr,
-          style: kTextStyle.copyWith(color: kDarkWhite),
+        title: Container(
+          padding: EdgeInsets.only(bottom: 10,),
+          height: 80,width: 300,
+          child: Row( mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(Images.appLogo, fit: BoxFit.cover),
+            ],
+          ),
         ),
         actions: [
           Padding(
             padding: const EdgeInsets.all(15.0),
             child: Container(
                 padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(2.0), color: kBgColor),
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(2.0), color: kMainColor),
                 child: const Icon(
                   FeatherIcons.plus,
-                  size: 18.0,
+                  size: 20.0,
                   color: kTitleColor,
                 )),
           ).onTap(
-            () => const SupportAdd().launch(context),
+                () => const SupportAdd().launch(context),
           ),
         ],
-        backgroundColor: kMainColor,
+        backgroundColor: kBgColor,
         elevation: 0.0,
-        iconTheme: const IconThemeData(color: kDarkWhite),
+        iconTheme: const IconThemeData(color: Colors.black),
       ),
       body: GetBuilder<SupportsController>(
           init: SupportsController(),

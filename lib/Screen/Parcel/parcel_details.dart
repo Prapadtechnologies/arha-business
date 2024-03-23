@@ -1,3 +1,4 @@
+import '../../utils/image.dart';
 import '/Models/parcels_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -29,13 +30,17 @@ class _ParcelDetailsState extends State<ParcelDetails> {
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: kMainColor,
+    return Scaffold(backgroundColor: kBgColor,
       appBar: AppBar(
         titleSpacing: 0,
-        title: Text(
-          'parcel_details'.tr,
-          style: kTextStyle.copyWith(color: Colors.white),
+        title:Container(
+          padding: EdgeInsets.only(bottom: 10,),
+          height:100,width: 275,
+          child: Row(  mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(Images.appLogo, fit: BoxFit.cover),
+            ],
+          ),
         ),
         leading: IconButton(
             onPressed: () {
@@ -43,34 +48,40 @@ class _ParcelDetailsState extends State<ParcelDetails> {
             },
             icon: Icon(
               Icons.arrow_back,
-              color: Colors.white,
+              color: Colors.black,
             )),
 
-        backgroundColor: kMainColor,
+        backgroundColor: kBgColor,
         elevation: 0.0,
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: GetBuilder<ParcelController>(
-       init: ParcelController(),
-       builder: (parcelLogs) =>
-       Container(
+      init: ParcelController(),
+    builder: (parcelLogs) =>
+      Container(
           padding: const EdgeInsets.all(10.0),
-          margin: EdgeInsets.only(top: 20),
+          margin: EdgeInsets.only(top: 15),
           decoration: const BoxDecoration(
+            color: Color(0xFFf9f9fe),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.orange,
+                spreadRadius: 4,
+                offset: Offset(0, 0),
+              ),
+            ],
             borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30.0),
               topRight: Radius.circular(30.0),
+              topLeft: Radius.circular(30.0),
             ),
-            color: Colors.white,
           ),
         child:
-          Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+          Column(crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-           Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 8, horizontal: 20),
-           child: Row(
+          Padding(
+          padding: const EdgeInsets.symmetric(
+              vertical: 5, horizontal: 20),
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GestureDetector(
@@ -90,7 +101,8 @@ class _ParcelDetailsState extends State<ParcelDetails> {
                   )
                       : BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(40),
+                    borderRadius:
+                    BorderRadius.circular(40),
                     border: Border.fromBorderSide(
                       BorderSide(
                         color: kMainColor,
@@ -144,19 +156,18 @@ class _ParcelDetailsState extends State<ParcelDetails> {
             ],
           ),
         ),
-        SizedBox(height: 10),
-        Container(height: MediaQuery.of(context).size.height * 0.69,
-
-
-         /* height: 610*/
+        SizedBox(height: 7),
+        SizedBox(
+          height: MediaQuery.of(context).size.height * 0.76,
           child: SingleChildScrollView(
-            padding: EdgeInsets.only(top: 5, bottom: 10),
-              child: statusActive == 1 ?
+              child:
+              statusActive == 1
+                  ?
             Column(
-              mainAxisSize: MainAxisSize.max,
+              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 10),
+                SizedBox(height: 7),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -190,7 +201,7 @@ class _ParcelDetailsState extends State<ParcelDetails> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 15.0),
+                const SizedBox(height: 10.0),
                 Text(
                   'cash_of_delivery'.tr,
                   style: kTextStyle.copyWith(color: kTitleColor, fontSize: 18.0, fontWeight: FontWeight.bold),
@@ -400,7 +411,7 @@ class _ParcelDetailsState extends State<ParcelDetails> {
                     )),
                   ],
                 ),
-                const SizedBox(height: 30.0),
+                const SizedBox(height: 20.0),
                 Text(
                   'parcel_info'.tr,
                   style: kTextStyle.copyWith(color: kTitleColor, fontSize: 18.0, fontWeight: FontWeight.bold),
@@ -590,9 +601,9 @@ class _ParcelDetailsState extends State<ParcelDetails> {
                                                           ],
                                                         ),
                                                       ),
-                                                       endChild: Padding(
+                                                      endChild: Padding(
                                                         padding: const EdgeInsets.only(
-                                                            top: 20.0, left: 10.0,bottom: 10),
+                                                            top: 20.0, left: 10.0),
                                                         child: Column(
                                                           crossAxisAlignment: CrossAxisAlignment.start,
                                                           children: [
@@ -725,7 +736,7 @@ class _ParcelDetailsState extends State<ParcelDetails> {
                                 ),
 
                                 const SizedBox(
-                                  height: 50.0,
+                                  height: 40.0,
                                 ),
                               ],
                             ),
@@ -734,8 +745,6 @@ class _ParcelDetailsState extends State<ParcelDetails> {
                             color: kMainColor,
                           ),
                         )
-
-
                         ],
                                     )
 

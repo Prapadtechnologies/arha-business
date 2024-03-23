@@ -1,19 +1,21 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:we_courier_merchant_app/Screen/Profile/profile.dart';
 import '../Models/login_models.dart';
 import '../Models/refresh_token_model.dart';
 import '../Models/register_model.dart';
+import '../Screen/Authentication/otpLoginModels.dart';
 import '../Screen/Authentication/sign_in.dart';
+import '../Screen/Authentication/verifyOtpModels.dart';
 import '../Screen/Authentication/verify_otp.dart';
 import '../Screen/Home/home.dart';
+import '../Screen/Profile/edit_profile_view.dart';
 import '/services/api-list.dart';
 import '/services/server.dart';
 import '/services/user-service.dart';
 import '/services/validators.dart';
 import 'package:get/get.dart';
-
 import 'global-controller.dart';
 
 class AuthController extends GetxController {
@@ -36,7 +38,6 @@ class AuthController extends GetxController {
   TextEditingController passwordConfirmationController = TextEditingController();
   bool obscureText = true;
   bool loader = false;
-
 
   changeVisibility() {
     obscureText = !obscureText;
@@ -77,7 +78,10 @@ class AuthController extends GetxController {
             update();
           });
           Get.off(() => const Home());
-          Get.rawSnackbar(message: "${loginData.message}", backgroundColor: Colors.green, snackPosition: SnackPosition.TOP);
+          Get.rawSnackbar(
+              message: "${loginData.message}",
+              backgroundColor: Colors.green,
+              snackPosition: SnackPosition.TOP);
 
         } else {
           loader = false;
@@ -85,7 +89,10 @@ class AuthController extends GetxController {
             update();
           });
           final jsonResponse = json.decode(response.body);
-          Get.rawSnackbar(message: "${jsonResponse['message']}", backgroundColor: Colors.red, snackPosition: SnackPosition.TOP);
+          Get.rawSnackbar(
+              message: "${jsonResponse['message']}",
+              backgroundColor: Colors.red,
+              snackPosition: SnackPosition.TOP);
         }
       });
     } else {
@@ -121,98 +128,139 @@ class AuthController extends GetxController {
     });
   }
 
-  signupOnTap(hubID, String locationaddress) async {
+  signupOnTap(hubID) async {
     loader = true;
     Future.delayed(Duration(milliseconds: 10), () {
       update();
     });
 
-      Map body = {
-        'business_name': firstNameController.text +' '+ lastNameController.text,/*businessNameController.text,*/
-        'full_name': firstNameController.text +' '+ lastNameController.text,
-        'address': addressController.text+locationaddress,
-        'email': emailController.text,
-        'mobile': phoneController.text,
-        'password': passwordController.text,
-        'hub_id': hubID.toString(),
-      };
-      String jsonBody = json.encode(body);
-      print(jsonBody);
-      server.postRequest(endPoint: APIList.register, body: jsonBody)
-          .then((response) {
-        if (response != null && response.statusCode == 200) {
-          final jsonResponse = json.decode(response.body);
-          print(jsonResponse);
-          var regData = RegisterModel.fromJson(jsonResponse);
-          if(regData.success!){
-            Get.off(OtpVerify(mobile:regData.data!.mobile.toString(),));
+    Map body = {
+      'business_name': businessNameController.text,
+      'full_name': firstNameController.text +' '+ lastNameController.text,
+      'address': addressController.text,
+      'email': emailController.text,
+      'mobile': phoneController.text,
+      'password': passwordController.text,
+      'hub_id': hubID.toString(),
+    };
+    String jsonBody = json.encode(body);
+    print(jsonBody);
+    server.postRequest(endPoint: APIList.register, body: jsonBody).then((response) {
+      if (response != null && response.statusCode == 200) {
+        final jsonResponse = json.decode(response.body);
+        print(jsonResponse);
+        var regData = RegisterModel.fromJson(jsonResponse);
+        if(regData.success!){
+          Get.rawSnackbar(
+              message: "${regData.message}",
+              backgroundColor: Colors.green);
+          /*    Get.off(OtpVerify(mobile:regData.data!.mobile.toString(),));
             Get.rawSnackbar(
                 message: "${regData.message}",
                 backgroundColor: Colors.green,
-                snackPosition: SnackPosition.TOP);
-            businessNameController.clear();
-            firstNameController.clear();
-            lastNameController.clear();
-            phoneController.clear();
-            passwordController.clear();
-            emailController.clear();
+                snackPosition: SnackPosition.TOP);*/
+          businessNameController.clear();
+          firstNameController.clear();
+          lastNameController.clear();
+          phoneController.clear();
+          passwordController.clear();
+          emailController.clear();
 
-          }
-          loader = false;
-          Future.delayed(Duration(milliseconds: 10), () {
-            update();
-          });
-        }else if (response != null && response.statusCode == 422) {
-          final jsonResponse = json.decode(response.body);
-          print(jsonResponse);
-          if (jsonResponse['data']['message']['mobile'] != null) {
-            Get.rawSnackbar(message: jsonResponse['data']['message']['mobile'].toString(),backgroundColor: Colors.red,
-                snackPosition: SnackPosition.TOP);
-          }
-          loader = false;
-          Future.delayed(Duration(milliseconds: 10), () {
-            update();
-          });
-        } else {
-          loader = false;
-          Future.delayed(Duration(milliseconds: 10), () {
-            update();
-          });
-          Get.rawSnackbar(message: 'Please enter valid input');
         }
-      });
-    }
+        loader = false;
+        Future.delayed(Duration(milliseconds: 10), () {
+          update();
+        });
+      }else if (response != null && response.statusCode == 422) {
+        final jsonResponse = json.decode(response.body);
+        print(jsonResponse);
+        if (jsonResponse['data']['message']['mobile'] != null) {
+          Get.rawSnackbar(message: jsonResponse['data']['message']['mobile'].toString(),backgroundColor: Colors.red,
+              snackPosition: SnackPosition.TOP);
+        }
+        loader = false;
+        Future.delayed(Duration(milliseconds: 10), () {
+          update();
+        });
+      } else {
+        loader = false;
+        Future.delayed(Duration(milliseconds: 10), () {
+          update();
+        });
+        Get.rawSnackbar(message: 'Please enter valid input');
+      }
+    });
+  }
 
-  otpVerification(mobile) async {
+  LoginWithOtp({BuildContext? context, String? email}) async{
     loader = true;
     Future.delayed(const Duration(milliseconds: 10), () {
       update();
     });
-      Map body = {'otp': '${otp1.text.toString()+otp2.text.toString()+otp3.text.toString()+otp4.text.toString()+otp5.text.toString()}', 'mobile': mobile};
-      String jsonBody = json.encode(body);
-      print(jsonBody);
-      server
-          .postRequest(endPoint: APIList.verifyOtp, body: jsonBody)
-          .then((response) {
-        if (response != null && response.statusCode == 200) {
-          final jsonResponse = json.decode(response.body);
-          var loginData = LoginModels.fromJson(jsonResponse);
+    Map body = {'mobile': email,'user_type':'2'};
+    String jsonBody = json.encode(body);
+    print("StringBody ==>${jsonBody}");
+    server.postRequest(endPoint: APIList.otpLogin, body: jsonBody).then((response) {
+      if (response != null && response.statusCode == 200) {
+        updateFcmSubscribe(email);
+        final jsonResponse = json.decode(response.body);
+        var loginData = OtpLoginModels.fromJson(jsonResponse);
+
+        if(loginData.success!){
+          Get.put(GlobalController()).initController();
+          emailController.clear();
+          loader = false;
+          Future.delayed(const Duration(milliseconds: 10), () {
+            update();
+          });
+          // Get.off(() => const Home());
+          Get.off(OtpVerify(mobile:loginData.data!.mobile.toString(),OurOtp:loginData.data!.oUROTP.toString()));
+
+          Get.rawSnackbar(message: "${loginData.message}", backgroundColor: Colors.green, snackPosition: SnackPosition.BOTTOM);
+
+        }
+
+      } else {
+        loader = false;
+        Future.delayed(const Duration(milliseconds: 10), () {
+          update();
+        });
+        final jsonResponse = json.decode(response.body);
+        Get.rawSnackbar(message: "${jsonResponse['message']}", backgroundColor: Colors.red, snackPosition: SnackPosition.BOTTOM);
+      }
+    });
+  }
+
+  otpVerification(mobile, ourOtp) async {
+    loader = true;
+    Future.delayed(const Duration(milliseconds: 10), () {
+      update();
+    });
+    Map body = {'CUSTOMER_OTP': '${otp1.text.toString()+otp2.text.toString()+otp3.text.toString()+otp4.text.toString()+otp5.text.toString()}',
+      'mobile': mobile,'user_type':'2','OUR_OTP':ourOtp};
+    String jsonBody = json.encode(body);
+    print(jsonBody);
+    server.postRequest(endPoint: APIList.verifyOtp, body: jsonBody).then((response) async {
+      if (response != null && response.statusCode == 200) {
+        final jsonResponse = json.decode(response.body);
+        var loginData = VerifyOtpModels.fromJson(jsonResponse);
+
+        //6303218131
+        if(loginData.success! || loginData.data?.user?.name != null){
           var bearerToken = 'Bearer ' + "${loginData.data?.token}";
           userService.saveBoolean(key: 'is-user', value: true);
           userService.saveString(key: 'token', value: loginData.data?.token);
-          userService.saveString(
-              key: 'user-id', value: loginData.data!.user?.id.toString());
-          userService.saveString(
-              key: 'email', value: loginData.data!.user!.email.toString());
-          userService.saveString(
-              key: 'image', value: loginData.data!.user!.image.toString());
-          userService.saveString(
-              key: 'name', value: loginData.data!.user!.name.toString());
-          userService.saveString(
-              key: 'phone', value: loginData.data!.user!.phone.toString());
-
-          Server.initClass(token: bearerToken);
+          userService.saveString(key: 'user-id', value: loginData.data!.user?.id.toString());
+          userService.saveString(key: 'image', value: loginData.data!.user!.image.toString());
+          userService.saveString(key: 'name', value: loginData.data!.user!.name.toString());
+          userService.saveString(key: 'phone', value: loginData.data!.user!.phone.toString());
+          userService.saveString(key: 'email', value: loginData.data!.user!.email.toString());
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.setString('user-id', loginData.data!.user!.id.toString());
+          prefs.setString("phone", loginData.data!.user!.phone.toString());
+          Get.rawSnackbar(message: "${loginData.message}",backgroundColor: Colors.green, snackPosition: SnackPosition.BOTTOM);
           Get.put(GlobalController()).initController();
+          Server.initClass(token: bearerToken);
           otp1.clear();
           otp2.clear();
           otp3.clear();
@@ -222,26 +270,24 @@ class AuthController extends GetxController {
           Future.delayed(const Duration(milliseconds: 10), () {
             update();
           });
-          Get.off(() => const Home());
-          Get.rawSnackbar(
-              message: "${loginData.message}",
-              backgroundColor: Colors.green,
-              snackPosition: SnackPosition.TOP);
-
+          Get.off(() => Profile());
         } else {
           loader = false;
           Future.delayed(const Duration(milliseconds: 10), () {
             update();
           });
+
+          Get.off(() => Home());
           final jsonResponse = json.decode(response.body);
           Get.rawSnackbar(
               message: "${jsonResponse['message']}",
               backgroundColor: Colors.red,
-              snackPosition: SnackPosition.TOP);
+              snackPosition: SnackPosition.BOTTOM);
         }
-      });
+      }
+    });
 
-    }
+  }
 
   updateFcmSubscribe(email) async {
     SharedPreferences storage = await SharedPreferences.getInstance();
@@ -251,7 +297,8 @@ class AuthController extends GetxController {
       "topic": email,
     };
     String jsonBody = json.encode(body);
-    server.postRequest(endPoint: APIList.fcmSubscribe, body: jsonBody)
+    server
+        .postRequest(endPoint: APIList.fcmSubscribe, body: jsonBody)
         .then((response) {
       if (response != null && response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);

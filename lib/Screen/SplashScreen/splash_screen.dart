@@ -1,8 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
-
-import 'package:geolocator/geolocator.dart';
-
 import '/utils/image.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +8,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../Controllers/auth-controller.dart';
 import '../../Controllers/global-controller.dart';
 import '../Authentication/sign_in.dart';
-import '../Widgets/constant.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -61,11 +56,10 @@ class _SplashScreenState extends State<SplashScreen> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kBgColor,
+      backgroundColor: Colors.white/*kBgColor*/,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,

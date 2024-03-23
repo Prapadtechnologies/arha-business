@@ -24,7 +24,7 @@ class _ShimmerScreenState extends State<ShimmerScreen> {
               baseColor: Colors.red,
               highlightColor: Colors.yellow,
               child: Text(
-                'Arha Courier'.tr,
+                'wecourier'.tr,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 40.0,

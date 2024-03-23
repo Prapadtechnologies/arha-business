@@ -61,10 +61,12 @@ dependencies:
   address_search_field: ^5.0.3
   rainbow_color: ^2.0.1
   change_app_package_name: ^1.1.0
+  dropdown_search: ^5.0.3
   geolocator: ^10.1.0
   geocoding: ^2.0.4
   flutter_google_places_hoc081098: ^2.0.0-beta
   google_api_headers: ^2.0.3
+  flutter_chat_ui: ^1.6.12
 
 
 dev_dependencies:

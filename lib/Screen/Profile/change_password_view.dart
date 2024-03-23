@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:we_courier_merchant_app/Screen/Profile/profile.dart';
 import '../../Controllers/profile_controller.dart';
+import '../../utils/image.dart';
 import '../../utils/size_config.dart';
 import '../../utils/style.dart';
 import '../Widgets/constant.dart';
@@ -19,14 +21,30 @@ class ChangePasswordView extends GetView {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text(
-          'change_password'.tr,
-          style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w800),
+        iconTheme: const IconThemeData(color: Colors.black),
+        titleSpacing: 0,
+        backgroundColor: kBgColor,
+        elevation: 0.0,
+        title: Container(
+          padding: EdgeInsets.only(bottom: 10,),
+          height: 80,width: 300,
+          child: Row(  mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                  onPressed: () {
+                    Get.back();
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => Profile()));
+                  },
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: kBgColor,
+                  )),
+              Image.asset(Images.appLogo, fit: BoxFit.cover),
+            ],
+          ),
         ),
-        centerTitle: true,
-        elevation: 0,
-        backgroundColor: kMainColor,
       ),
+
       body: GetBuilder<ProfileController>(
       init: ProfileController(),
       builder: (profile) =>

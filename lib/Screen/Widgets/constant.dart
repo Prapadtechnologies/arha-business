@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
- const kMainColor = Color(0xFFFA8613);
+
+
+ const kMainColor =  Color(0xFFFA8613); /*Color(0xFF7e0095);*/
  const kBgColor = Color(0xFFfafafb);
  const Color itembg = Color(0xffEFF0F6);
  const Color deleveryColor = Color(0xffBDEFFF);
@@ -18,7 +20,6 @@ import 'package:google_fonts/google_fonts.dart';
  const Color borderColor = Color(0xffE3EBFF);
  const Color redColor = Color(0xffDD2702);
  const kDangerColor = Color(0xFFff407b);
-
 final kTextStyle = GoogleFonts.manrope(
   color: Colors.white,
 );
@@ -84,7 +85,6 @@ List<String> productCategory = [
   'Watches',
   'Cloths'
 ];
-
 
 List<String> userRole = [
   'Super Admin',

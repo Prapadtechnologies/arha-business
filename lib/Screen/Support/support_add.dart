@@ -1,3 +1,4 @@
+import '../../utils/image.dart';
 import '/Controllers/supports_controller.dart';
 import '/Screen/Widgets/button_global.dart';
 import 'package:file_picker/file_picker.dart';
@@ -128,18 +129,27 @@ class _SupportAddState extends State<SupportAdd> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kMainColor,
+      backgroundColor: kBgColor,
       appBar: AppBar(
-        title: Text('support_add'.tr,style: kTextStyle.copyWith(color: kDarkWhite),),
+        title: Container(
+          padding: EdgeInsets.only(bottom: 10,),
+          height: 80,width: 300,
+          child: Row(  mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(Images.appLogo, fit: BoxFit.cover),
+            ],
+          ),
+        ),
+
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 10.0),
-            child: const Icon(FeatherIcons.x,color: kDarkWhite,).onTap(()=>Navigator.pop(context),),
+            child: const Icon(FeatherIcons.x,color: Colors.black,).onTap(()=>Navigator.pop(context),),
           ),
         ],
-        backgroundColor: kMainColor,
+        backgroundColor: kBgColor,
         elevation: 0.0,
-        iconTheme: const IconThemeData(color: kDarkWhite),
+        iconTheme: const IconThemeData(color: Colors.black),
       ),
       body: SingleChildScrollView(
         child: Column(

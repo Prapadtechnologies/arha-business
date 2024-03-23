@@ -8,12 +8,18 @@ class APIList {
   static String? apiEndPoint = "/api/v10/";
   static String? login = "${server!}signin";
   static String? hub = "${server!}hub";
+
+  static String? filtershub = "${server!}hub/filter";
+  static String? dashmain = "${server!}hub/parcel/index";
+
+  static String? HubTrabsferRequest = "${server!}parcel/transfer-to-hub";
+
   static String? register = "${server!}register";
   static String? logout = "${server!}sign-out";
   static String? refreshToken = "${server!}refresh";
   static String? otpLogin = "${server!}otp-login";
   static String? otpResend = "${server!}resend-otp";
-  static String? verifyOtp = "${server!}otp-verification";
+  static String? verifyOtp = "${server!}otp-verify";
   static String? profile = "${server!}profile";
   static String? device = "${server!}device";
   static String? fcmSubscribe = "${server!}fcm-subscribe";
@@ -34,6 +40,9 @@ class APIList {
   static String? shopUpdate = "${server!}shops/update/";
   static String? shopDelete = "${server!}shops/delete/";
   static String? parcelList = "${server!}parcel/index";
+
+  static String? Parcel_order_list = "${server!}parcel/index";
+
   static String? parcelFilter = "${server!}parcel/filter";
   static String? parcelCreate = "${server!}parcel/create";
   static String? parcelDetails = "${server!}parcel/details/";

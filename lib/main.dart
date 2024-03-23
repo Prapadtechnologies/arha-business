@@ -13,7 +13,7 @@ Future<void> main() async {
   final box = GetStorage();
   WidgetsFlutterBinding.ensureInitialized();
   const firebaseOptions = FirebaseOptions(
-    appId: '1:696555057769:android:c7a9bce37902a53802a8f8',
+    appId: '1:696555057769:android:515985121fd9141302a8f8',
     apiKey: 'AIzaSyA2lXnXLx2IFT5LoGQATs8VefD-LhYyobE',
     projectId: 'courier-8637f',
     messagingSenderId: '696555057769',
@@ -24,8 +24,9 @@ Future<void> main() async {
     projectId: 'we-courier-81101',
     messagingSenderId: '151878495365',
     authDomain: 'we-courier-81101.firebaseapp.com',*/
+
   );
-  await Firebase.initializeApp(name: 'Customer App (Clone from Merchant App)'/*'courier'*/, options: firebaseOptions);
+  await Firebase.initializeApp(name: 'courier', options: firebaseOptions);
   await GetStorage.init();
   dynamic langValue = const Locale('en', 'US');
   if (box.read('lang') != null) {
@@ -60,7 +61,7 @@ class MyApp extends StatelessWidget {
               debugShowCheckedModeBanner: false,
               translations: Languages(),
               locale: lang,
-              title: 'Arha Business',
+              title: 'Merchant',
               theme: ThemeData(fontFamily: 'Display'),
               home: const SplashScreen(),
             )));

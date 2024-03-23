@@ -1,9 +1,11 @@
+import '../utils/image.dart';
 import '/Screen/Widgets/shimmer/deliveryCharge_shimmer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../Controllers/deliveryCharge_controller.dart';
+import 'Home/dashboard.dart';
+import 'Home/home.dart';
 import 'Widgets/constant.dart';
 
 class DeliveryChargeList extends StatefulWidget {
@@ -26,36 +28,60 @@ class _DeliveryChargeListState extends State<DeliveryChargeList> {
       length: 4,
       child:
       Scaffold(
-        backgroundColor: kMainColor,
+        backgroundColor: kBgColor,
         appBar: AppBar(
-          title: Text(
-            'delivery_charges'.tr,
-            style: kTextStyle.copyWith(color: kBgColor),
+          titleSpacing: 0,
+          title:Container(
+            padding: EdgeInsets.only(bottom: 5,),
+            height:100,width: 275,
+            child: Row(  mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(Images.appLogo, fit: BoxFit.cover),
+              ],
+            ),
           ),
-          backgroundColor: kMainColor,
+          leading: IconButton(
+              onPressed: () {
+                Get.back();
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => Home()));
+
+                // Get.find<ParcelController>().clearAll();
+              },
+              icon: Icon(
+                Icons.arrow_back,
+                color: Colors.black,
+              )),
+
+          backgroundColor: kBgColor,
           elevation: 0.0,
-          iconTheme: const IconThemeData(color: kBgColor),
         ),
         body:  GetBuilder<DeliveryChargeController>(
             init: DeliveryChargeController(),
             builder: (deliveryCharge) =>
-                Container(
+                Container(margin: EdgeInsets.only(top: 15),
                   clipBehavior: Clip.antiAlias,
                   width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: kGreyTextColor.withOpacity(0.2)),
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(30.0),
+                  decoration:const BoxDecoration(
+                    color: Color(0xFFf9f9fe),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.orange,
+                        spreadRadius: 4,
+                        offset: Offset(0, 0),
+                      ),
+                    ],
+                    borderRadius: BorderRadius.only(
                       topRight: Radius.circular(30.0),
+                      topLeft: Radius.circular(30.0),
+                      bottomLeft: Radius.circular(0.0),
+                      bottomRight:  Radius.circular(0.0),
                     ),
-                    color: Colors.white,
                   ),
                   child: SingleChildScrollView(
                     child: Container(child:
                     deliveryCharge.loader
                         ? DeliveryChargeShimmer()
-                        : Column(
-                      children: [
+                        : Column(children: [
                         const SizedBox(height: 20.0),
                         Column(
                           children: [
@@ -68,9 +94,9 @@ class _DeliveryChargeListState extends State<DeliveryChargeList> {
                                 physics: const NeverScrollableScrollPhysics(),
                                 itemBuilder: (_, i) {
                                   return ( Card(
-                                    color: kBgColor,
-                                    elevation: 5,
-                                    margin: EdgeInsets.symmetric(vertical: 7),
+                                    color: Colors.white,
+                                    elevation: 1,
+                                    margin: EdgeInsets.symmetric(vertical: 3),
                                     shape: RoundedRectangleBorder(
                                       borderRadius:
                                       BorderRadius.circular(7.0),

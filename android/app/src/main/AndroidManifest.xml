@@ -10,7 +10,7 @@
     <application
         android:label="Arha Business"
         android:name="${applicationName}"
-        android:icon="@mipmap/logo_6"
+        android:icon="@mipmap/launcher_icon"
         android:usesCleartextTraffic="true">
 
         <activity

@@ -98,7 +98,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                             color: kMainColor),
                         onPressed: () {
                           setState(() {
-                             OtpVerify(mobile: '',).launch(context);
+                         //    OtpVerify(mobile: '',).launch(context);
                           });
                         },
                       ),
