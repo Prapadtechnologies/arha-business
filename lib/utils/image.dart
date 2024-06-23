@@ -9,7 +9,7 @@ class Images {
   static String get iconHome => 'assets/icons/home.png';
   static String get iconHistory => 'assets/icons/history.png';
   static String get iconProfile => 'assets/icons/profile.png';
-  static String get iconBack => 'assets/icons/back.svg';
+
   static String get imageAvatar => 'assets/icons/avatar.png';
   static String get iconEdit => 'assets/icons/edit.png';
   static String get iconEditProfile => 'assets/icons/icon_edit.svg';

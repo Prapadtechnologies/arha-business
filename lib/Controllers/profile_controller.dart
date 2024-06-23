@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import '../Models/profile_model.dart';
+import '../Screen/Profile/profile.dart';
 import '/services/api-list.dart';
 import '/services/server.dart';
 import '/services/user-service.dart';
@@ -69,11 +70,11 @@ class ProfileController extends GetxController {
     });
     Map<String, String> body = {
       'name': nameController.text,
-      'address': ""/*addressController.text*/,
-      'business_name': ""/*businessNameController.text*/,
       'email': emailController.text,
       'mobile': phoneController.text,
     };
+    print("body ==> ${body}");
+
     print(filepath);
     server.multipartRequest(endPoint: APIList.profileUpdate, body: body, filepath: filepath, nidPath: nidpath, tradeLicensepath: tradepath, type: type)
         .then((response) {
@@ -81,17 +82,15 @@ class ProfileController extends GetxController {
       if (response != null && response.statusCode == 200) {
         emailController.clear();
         nameController.clear();
-        businessNameController.clear();
-        addressController.clear();
         phoneController.clear();
         loader = false;
-        Get.rawSnackbar(message: "${response.message}",backgroundColor: Colors.green, snackPosition: SnackPosition.BOTTOM);
+       // Get.rawSnackbar(message: "${response.message}",backgroundColor: Colors.green, snackPosition: SnackPosition.BOTTOM);
 
-        getUserProfile();
+       getUserProfile();
         Future.delayed(Duration(milliseconds: 10), () {
           update();
         });
-        Get.back();
+        Get.off(() => Profile());
       } else {
         loader = false;
         Future.delayed(Duration(milliseconds: 10), () {

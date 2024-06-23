@@ -1,6 +1,7 @@
 import 'package:bottom_bar/bottom_bar.dart';
 import '../../ParcelRequest/transferParcelOrdersToHub.dart';
 import '../International/internationalParcelPage.dart';
+import '../ParcelTrack/trackParcel.dart';
 import '/Screen/Home/dashboard.dart';
 import '/Screen/Parcel/parcel_index.dart';
 import '/Screen/Profile/profile.dart';
@@ -26,8 +27,9 @@ class _HomeState extends State<Home> {
   static  List<Widget> _widgetOptions = <Widget>[
     DashBoard(),
     ParcelPage(height: 0.78),
-    DeliveryChargeList(),
+   // DeliveryChargeList(),
    // TransferParcelOdersToHub(height: 0.78),
+    TrackParcel(),
     Profile(),
   ];
 
@@ -108,10 +110,23 @@ class _HomeState extends State<Home> {
                 inactiveColor: kMainColor,
               ),
 
-              BottomBarItem(
+              /*BottomBarItem(
                 icon: const Icon(FontAwesomeIcons.clipboardList, size: 16.0),
-                /* title: Text(
+                *//* title: Text(
                   "delivery_charges".tr,
+                  style: kTextStyle.copyWith(
+                      color: kTitleColor,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700),
+                ),*//*
+                activeColor: kMainColor,
+                inactiveColor: kMainColor,
+              ),*/
+
+              BottomBarItem(
+                icon: const Icon(FontAwesomeIcons.truckMoving,size: 16.0),
+               /* title: Text(
+                  "track_parcel".tr,
                   style: kTextStyle.copyWith(
                       color: kTitleColor,
                       fontSize: 13,
@@ -120,6 +135,7 @@ class _HomeState extends State<Home> {
                 activeColor: kMainColor,
                 inactiveColor: kMainColor,
               ),
+
 
               /// Profile
               BottomBarItem(

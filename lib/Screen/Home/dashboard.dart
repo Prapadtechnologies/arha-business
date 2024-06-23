@@ -41,6 +41,8 @@ import '../../utils/style.dart';
 import '../Widgets/constant.dart';
 import '../Widgets/shimmer/dashboard_shimmer.dart';
 import '../cod_charges.dart';
+import 'dart:math';
+
 
 class DashBoard extends StatefulWidget {
   const DashBoard({Key? key}) : super(key: key);
@@ -163,11 +165,11 @@ class _DashBoardState extends State<DashBoard> {
       startLocation_2 = LatLng(currentposition.latitude as double, currentposition.longitude as double);
       Current_Latitude = currentposition.latitude.toString();
       Current_Longitude = currentposition.longitude.toString();
-      print("Location ==> ${Current_Latitude+","+Current_Longitude}");
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('currentLati', Current_Latitude);
       prefs.setString('currentLongi', Current_Longitude);
+     // print("Currect ==> ${Current_Latitude+","+Current_Longitude}");
 
 
       //----------get Address-------------------------
@@ -181,7 +183,7 @@ class _DashBoardState extends State<DashBoard> {
       String? postalCode = placeMark.postalCode;
       String? country = placeMark.country;
       locationAddress = "${name}, ${subLocality}, ${locality}, ${administrativeArea} ${postalCode}, ${country}";
-      print("locationAddress ==> ${locationAddress}");
+
 
     }
   }
@@ -190,6 +192,7 @@ class _DashBoardState extends State<DashBoard> {
   Future.delayed(const Duration(milliseconds: 500), () {
     setState(() {
     getLocation();
+  //  checkDistance();
     });
     });
 
@@ -250,6 +253,9 @@ class _DashBoardState extends State<DashBoard> {
                     ],
                   ),
                 ),
+
+                const SizedBox(height: 15,),
+
                 ListTile(
                   onTap: (() => const Home().launch(context)),
                   contentPadding: EdgeInsets.zero,
@@ -272,7 +278,9 @@ class _DashBoardState extends State<DashBoard> {
                         color: kTitleColor, size: 18),
                   ),
                 ),
-                ListTile(
+
+
+              /*  ListTile(
                   contentPadding: EdgeInsets.zero,
                   horizontalTitleGap: 0,
                   leading: const Icon(
@@ -527,7 +535,7 @@ class _DashBoardState extends State<DashBoard> {
                         ),
 
                       ],
-                    )),
+                    )),*/
 
                 ListTile(
                   onTap: () => {
@@ -567,7 +575,7 @@ class _DashBoardState extends State<DashBoard> {
         elevation: 0.0,
         title: Container(
           padding: EdgeInsets.only(bottom: 5,),
-          height: 100,width: 275,
+          height: 70,width: 275,
           child: Row(  mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(Images.appLogo, fit: BoxFit.fill),
@@ -643,6 +651,7 @@ class _DashBoardState extends State<DashBoard> {
                                         final geometry = detail.result.geometry!;
                                         final lat = geometry.location.lat;
                                         final lang = geometry.location.lng;
+
                                         var newlatlang = LatLng(lat, lang);
 
                                         //move map camera to selected place with animation
@@ -718,6 +727,8 @@ class _DashBoardState extends State<DashBoard> {
                                         SharedPreferences prefs = await SharedPreferences.getInstance();
                                         prefs.setString('fromLati', lat.toString());
                                         prefs.setString('fromLongi', lang.toString());
+                                        print("Target ==> ${lat.toString()+","+lang.toString()}");
+
 
                                         var newlatlang = LatLng(lat, lang);
 
@@ -750,15 +761,15 @@ class _DashBoardState extends State<DashBoard> {
                               margin: EdgeInsets.only(left: 120),
                               child: ElevatedButton(
                                 onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>  CreateParcel(),
-                                      settings: RouteSettings(
-                                        arguments: locationAddress.toString()+"123"+fromlocation,
+                                  if(fromlocation =='search designation'){
+                                    Get.rawSnackbar(message: "Enter Valid location address", backgroundColor: Colors.red, snackPosition: SnackPosition.BOTTOM);
+                                  }else{
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) =>  CreateParcel(),
+                                      settings: RouteSettings(arguments: locationAddress.toString()+"123"+fromlocation,
                                       ),
                                     ),
-                                  );
+                                    );
+                                  }
                                 },
 
                                 style: ElevatedButton.styleFrom(
@@ -1471,4 +1482,43 @@ class _DashBoardState extends State<DashBoard> {
               )),
     );
   }
-}
+
+  void checkDistance() {
+  /* LatLng point1 = LatLng(28.4012825, 79.4790013);
+    LatLng point2 = LatLng(28.644512, 77.2215346); */
+
+    LatLng point1 = LatLng(17.4615812,78.3454611);
+    LatLng point2 = LatLng(16.491775,76.544115);
+    double distance = calculateDistance(point1, point2);
+   print('Distancead ==> ${distance.toStringAsFixed(2)}');
+
+
+  }
+
+// Function to calculate distance between two LatLng points using Haversine formula
+  double calculateDistance(LatLng start, LatLng end) {
+    const double earthRadius = 6371; // Radius of the earth in kilometers
+
+    // Convert latitude and longitude from degrees to radians
+    double startLatRadians = degreesToRadians(start.latitude);
+    double startLongRadians = degreesToRadians(start.longitude);
+    double endLatRadians = degreesToRadians(end.latitude);
+    double endLongRadians = degreesToRadians(end.longitude);
+
+    // Calculate the change in coordinates
+    double latDiff = endLatRadians - startLatRadians;
+    double longDiff = endLongRadians - startLongRadians;
+
+    // Calculate the distance using Haversine formula
+    double a = pow(sin(latDiff / 2), 2) +
+        cos(startLatRadians) * cos(endLatRadians) * pow(sin(longDiff / 2), 2);
+    double c = 2 * atan2(sqrt(a), sqrt(1 - a));
+    double distance = earthRadius * c;
+
+    return distance;
+  }
+
+// Function to convert degrees to radians
+  double degreesToRadians(double degrees) {
+    return degrees * pi / 180;
+  }}

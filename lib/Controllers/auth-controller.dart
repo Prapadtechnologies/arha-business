@@ -246,7 +246,7 @@ class AuthController extends GetxController {
         var loginData = VerifyOtpModels.fromJson(jsonResponse);
 
         //6303218131
-        if(loginData.success! || loginData.data?.user?.name != null){
+        if(loginData.data?.user?.name != null){
           var bearerToken = 'Bearer ' + "${loginData.data?.token}";
           userService.saveBoolean(key: 'is-user', value: true);
           userService.saveString(key: 'token', value: loginData.data?.token);
@@ -255,8 +255,10 @@ class AuthController extends GetxController {
           userService.saveString(key: 'name', value: loginData.data!.user!.name.toString());
           userService.saveString(key: 'phone', value: loginData.data!.user!.phone.toString());
           userService.saveString(key: 'email', value: loginData.data!.user!.email.toString());
+
+          print("Name ==> ${loginData.data?.user?.name}");
           SharedPreferences prefs = await SharedPreferences.getInstance();
-          prefs.setString('user-id', loginData.data!.user!.id.toString());
+          prefs.setString("user-id", loginData.data!.user!.id.toString());
           prefs.setString("phone", loginData.data!.user!.phone.toString());
           Get.rawSnackbar(message: "${loginData.message}",backgroundColor: Colors.green, snackPosition: SnackPosition.BOTTOM);
           Get.put(GlobalController()).initController();
@@ -272,12 +274,13 @@ class AuthController extends GetxController {
           });
           Get.off(() => Profile());
         } else {
+
           loader = false;
           Future.delayed(const Duration(milliseconds: 10), () {
             update();
           });
-
           Get.off(() => Home());
+
           final jsonResponse = json.decode(response.body);
           Get.rawSnackbar(
               message: "${jsonResponse['message']}",

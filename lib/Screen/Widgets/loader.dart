@@ -24,7 +24,7 @@ class LoaderCircle extends StatelessWidget {
               child: Center(
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(50),
-                  child: Image.asset(Images.arhaM,
+                  child: Image.asset(Images.appLogo,
                       height: block * 20, width: block * 20),
                 ),
               ),

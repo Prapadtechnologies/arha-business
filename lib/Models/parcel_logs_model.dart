@@ -217,10 +217,10 @@ class Parcel {
   Parcel.fromJson(dynamic json) {
     _id = json['id'];
     _trackingId = json['tracking_id'];
-    _merchantId = json['merchant_id'].toString();
-    _merchantName = json['merchant_name'];
-    _merchantMobile = json['merchant_mobile'];
-    _merchantAddress = json['merchant_address'];
+    _merchantId = json['user_id'].toString();
+    _merchantName = json['user_name'];
+    _merchantMobile = json['mobile'];
+    _merchantAddress = json['pickup_address'];
     _customerName = json['customer_name'];
     _customerPhone = json['customer_phone'];
     _customerAddress = json['customer_address'];
@@ -285,10 +285,10 @@ class Parcel {
     final map = <String, dynamic>{};
     map['id'] = _id;
     map['tracking_id'] = _trackingId;
-    map['merchant_id'] = _merchantId;
-    map['merchant_name'] = _merchantName;
-    map['merchant_mobile'] = _merchantMobile;
-    map['merchant_address'] = _merchantAddress;
+    map['user_id'] = _merchantId;
+    map['user_name'] = _merchantName;
+    map['mobile'] = _merchantMobile;
+    map['pickup_address'] = _merchantAddress;
     map['customer_name'] = _customerName;
     map['customer_phone'] = _customerPhone;
     map['customer_address'] = _customerAddress;

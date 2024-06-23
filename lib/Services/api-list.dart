@@ -1,6 +1,6 @@
 class APIList {
-  static String? mainUrl = "https://courier.prapadtechnologies.com/"; /*"your domain url";*/
-  static String? apiUrl = "https://courier.prapadtechnologies.com/"; /*"your domain name";*/
+  static String? mainUrl = "https://arha-express.com/"/*"https://courier.prapadtechnologies.com/"*/;
+  static String? apiUrl = "https://arha-express.com/"/*"https://courier.prapadtechnologies.com/"*/;
   static String? mapGoogleApiKey = "AIzaSyA59LKmwVl-gP4U58kSKFTdu89I72bC1hM";
 
   static String? server = "${mainUrl}api/v10/";
@@ -40,6 +40,12 @@ class APIList {
   static String? shopUpdate = "${server!}shops/update/";
   static String? shopDelete = "${server!}shops/delete/";
   static String? parcelList = "${server!}parcel/index";
+
+  static String? distanceCharges = "${server!}parcel/distancecharges";
+  static String? parceltrackingID = "${server!}parcel/tracking/";
+  static String? parcelPdf = "${server!}parcel/generate_invoice";
+
+
 
   static String? Parcel_order_list = "${server!}parcel/index";
 

@@ -13,10 +13,10 @@ Future<void> main() async {
   final box = GetStorage();
   WidgetsFlutterBinding.ensureInitialized();
   const firebaseOptions = FirebaseOptions(
-    appId: '1:696555057769:android:515985121fd9141302a8f8',
-    apiKey: 'AIzaSyA2lXnXLx2IFT5LoGQATs8VefD-LhYyobE',
-    projectId: 'courier-8637f',
-    messagingSenderId: '696555057769',
+    appId: '1:296273875713:android:16166f622bcd0d60f88100',
+    apiKey: 'AIzaSyCoiga3cvR9TC0mTSGxYq4aaxyWSO7nM4w',
+    projectId: 'express-go-ee75a',
+    messagingSenderId: '296273875713',
     authDomain: 'we-courier-81101.firebaseapp.com',
 
     /*appId: '1:151878495365:android:2510842ed9330bba260dec',
@@ -61,7 +61,7 @@ class MyApp extends StatelessWidget {
               debugShowCheckedModeBanner: false,
               translations: Languages(),
               locale: lang,
-              title: 'Merchant',
+              title: 'Express Go',
               theme: ThemeData(fontFamily: 'Display'),
               home: const SplashScreen(),
             )));

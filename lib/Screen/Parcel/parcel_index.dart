@@ -526,7 +526,7 @@ class _ParcelPageState extends State<ParcelPage> {
         titleSpacing: 0,
         title:Container(
           padding: EdgeInsets.only(bottom: 5,),
-          height: 100,width: 275,
+          height: 70,width: 275,
           child: Row(  mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(Images.appLogo, fit: BoxFit.cover),

@@ -75,7 +75,7 @@ class Parcels {
       String? customerPhone, 
       String? customerAddress, 
       String? totalDeliveryAmount, 
-      String? vatAmount, 
+      int? vat,
       String? codAmount,
       String? currentPayable,
       String? cashCollection, 
@@ -87,9 +87,13 @@ class Parcels {
       String? pickupDate, 
       String? deliveryDate, 
       String? createdAt, 
-      String? updatedAt,
+      int? updatedAt,
       String? parcelTime,
       String? parcelDate,
+    String? packagingamount,
+    String? vatAmount,
+    int? pincode,
+    String? customerfulladdress,
   }){
     _id = id;
     _trackingId = trackingId;
@@ -104,7 +108,7 @@ class Parcels {
     _customerPhone = customerPhone;
     _customerAddress = customerAddress;
     _totalDeliveryAmount = totalDeliveryAmount;
-    _vatAmount = vatAmount;
+    _vat = vat;
     _codAmount = codAmount;
     _currentPayable = currentPayable;
     _cashCollection = cashCollection;
@@ -119,6 +123,10 @@ class Parcels {
     _updatedAt = updatedAt;
     _parcelTime = parcelTime;
     _parcelDate = parcelDate;
+    _packagingamount = packagingamount;
+    _vatamount = vatAmount;
+    _pincode = pincode;
+    _customer_full_address = customerfulladdress;
 }
 
   Parcels.fromJson(dynamic json) {
@@ -127,29 +135,35 @@ class Parcels {
     _invoiceNO = json['invoice_no'];
     _merchantId = json['merchant_id'].toString();
     _merchantName = json['merchant_name'];
-    _merchantUserName = json['merchant_user_name'];
-    _merchantUserEmail = json['merchant_user_email'];
-    _merchantMobile = json['merchant_mobile'];
-    _merchantAddress = json['merchant_address'];
+    _merchantUserName = json['user_name'];
+    _merchantUserEmail = json['user_email'];
+    _merchantMobile = json['mobile'];
+    _merchantAddress = json['pickup_address'];
     _customerName = json['customer_name'];
     _customerPhone = json['customer_phone'];
     _customerAddress = json['customer_address'];
     _totalDeliveryAmount = json['total_delivery_amount'];
     _codAmount = json['cod_amount'];
-    _vatAmount = json['vat_amount'];
+    _vat = json['vat'];
     _currentPayable = json['current_payable'];
-    _cashCollection = json['cash_collection'];
+    _cashCollection = json['distance'];
     _deliveryTypeId = json['delivery_type_id'];
     _deliveryType = json['deliveryType'];
     _weight = json['weight'];
     _status = json['status'];
     _statusName = json['statusName'];
-    _pickupDate = json['pickup_date'];
-    _deliveryDate = json['delivery_date'];
-    _createdAt = json['created_at'];
-    _updatedAt = json['updated_at'];
-    _parcelTime = json['parcel_time'];
+    _pickupDate = json['gst_number'];
+    _deliveryDate = json['gst_type'];
+    _createdAt = json['distance_amount'];
+    _updatedAt = json['quantity'];
+    _parcelTime = json['distance_total'];
     _parcelDate = json['parcel_date'];
+    _packagingamount=   json['packaging_amount'];
+    _vatamount = json['vat_amount'];
+    _pincode = json['pin_code'];
+    _customer_full_address = json['customer_fullAddress'];
+
+
   }
   int? _id;
   String? _trackingId;
@@ -164,7 +178,7 @@ class Parcels {
   String? _customerPhone;
   String? _customerAddress;
   String? _totalDeliveryAmount;
-  String? _vatAmount;
+  int? _vat;
   String? _codAmount;
   String? _currentPayable;
   String? _cashCollection;
@@ -176,9 +190,15 @@ class Parcels {
   String? _pickupDate;
   String? _deliveryDate;
   String? _createdAt;
-  String? _updatedAt;
+  int? _updatedAt;
   String? _parcelTime;
   String? _parcelDate;
+  String? _packagingamount;
+  String? _vatamount;
+  int? _pincode;
+  String? _customer_full_address;
+
+
 
   int? get id => _id;
   String? get trackingId => _trackingId;
@@ -193,7 +213,7 @@ class Parcels {
   String? get customerPhone => _customerPhone;
   String? get customerAddress => _customerAddress;
   String? get totalDeliveryAmount => _totalDeliveryAmount;
-  String? get vatAmount => _vatAmount;
+  int? get vat => _vat;
   String? get codAmount => _codAmount;
   String? get currentPayable => _currentPayable;
   String? get cashCollection => _cashCollection;
@@ -205,9 +225,13 @@ class Parcels {
   String? get pickupDate => _pickupDate;
   String? get deliveryDate => _deliveryDate;
   String? get createdAt => _createdAt;
-  String? get updatedAt => _updatedAt;
+  int? get updatedAt => _updatedAt;
   String? get parcelTime => _parcelTime;
   String? get parcelDate => _parcelDate;
+  String? get packagingamount => _packagingamount;
+  String? get vatAmount => _vatamount;
+  int? get pinCode => _pincode;
+  String? get customerfulladdress=> _customer_full_address;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -216,29 +240,34 @@ class Parcels {
     map['invoice_no'] = _invoiceNO;
     map['merchant_id'] = _merchantId;
     map['merchant_name'] = _merchantName;
-    map['merchant_user_name'] = _merchantUserName;
-    map['merchant_user_email'] = _merchantUserEmail;
-    map['merchant_mobile'] = _merchantMobile;
-    map['merchant_address'] = _merchantAddress;
+    map['user_name'] = _merchantUserName;
+    map['user_email'] = _merchantUserEmail;
+    map['mobile'] = _merchantMobile;
+    map['pickup_address'] = _merchantAddress;
     map['customer_name'] = _customerName;
     map['customer_phone'] = _customerPhone;
     map['customer_address'] = _customerAddress;
     map['total_delivery_amount'] = _totalDeliveryAmount;
-    map['vat_amount'] = _vatAmount;
+    map['vat'] = _vat;
     map['cod_amount'] = _codAmount;
     map['current_payable'] = _currentPayable;
-    map['cash_collection'] = _cashCollection;
+    map['distance'] = _cashCollection;
     map['delivery_type_id'] = _deliveryTypeId;
     map['deliveryType'] = _deliveryType;
     map['weight'] = _weight;
     map['status'] = _status;
     map['statusName'] = _statusName;
-    map['pickup_date'] = _pickupDate;
-    map['delivery_date'] = _deliveryDate;
-    map['created_at'] = _createdAt;
-    map['updated_at'] = _updatedAt;
-    map['parcel_time'] = _parcelTime;
+    map['gst_number'] = _pickupDate;
+    map['gst_type'] = _deliveryDate;
+    map['distance_amount'] = _createdAt;
+    map['quantity'] = _updatedAt;
+    map['distance_total'] = _parcelTime;
     map['parcel_date'] = _parcelDate;
+    map['packaging_amount'] = _packagingamount;
+    map['vat_amount'] = _vatamount;
+    map['pin_code'] = _pincode;
+    map['customer_fullAddress'] = _customer_full_address;
+
     return map;
   }
 

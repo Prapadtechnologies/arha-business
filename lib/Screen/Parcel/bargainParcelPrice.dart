@@ -204,7 +204,7 @@ class _BargainParcelPriceState extends State<BargainParcelPrice> {
             padding: EdgeInsets.only(
               bottom: 10,
             ),
-            height: 100,
+            height: 70,
             width: 300,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,

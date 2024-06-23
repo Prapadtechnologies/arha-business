@@ -1,0 +1,6 @@
+Express Go JKs Details
+
+
+keystore password : ExpressGo
+Alias : key0
+key password : ExpressGo

@@ -39,7 +39,6 @@ class Server {
     }
   }
 
-
   getRequestSettings(endPoint) async {
     HttpClient client = HttpClient();
     try {
@@ -66,7 +65,6 @@ class Server {
       client.close();
     }
   }
-
 
   postRequest({String? endPoint, String? body}) async {
 
@@ -168,6 +166,23 @@ class Server {
     }
   }
 
+  getwithoutHeadersRequest({required endPoint}) async {
+    HttpClient client = HttpClient();
+    try {
+      return await http.get(Uri.parse(endPoint!), headers: _OnlygetHttpHeaders());
+    } catch (error) {
+      return null;
+    } finally {
+      client.close();
+    }
+}
+
+  static Map<String, String> _OnlygetHttpHeaders() {
+    Map<String, String> headers = new Map<String, String>();
+    headers['content-type'] = 'application/json';
+    return headers;
+  }
+
 
   static Map<String, String> _getHttpHeaders() {
     Map<String, String> headers = new Map<String, String>();
@@ -177,6 +192,7 @@ class Server {
     print("Token ==> ${bearerToken!}");
     return headers;
   }
+
 
   static Map<String, String> _getHttpHeadersNotToken() {
     Map<String, String> headers = new Map<String, String>();

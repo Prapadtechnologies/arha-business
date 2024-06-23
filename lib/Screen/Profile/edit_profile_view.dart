@@ -49,7 +49,7 @@ class EditProfileView extends GetView {
         elevation: 0.0,
         title: Container(
           padding: EdgeInsets.only(bottom: 10,),
-          height: 80,width: 300,
+          height: 70,width: 300,
           child: Row(  mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(Images.appLogo, fit: BoxFit.cover),
@@ -286,100 +286,6 @@ class EditProfileView extends GetView {
                                     ),
                                   ),
                                 ),
-                              /*  SizedBox(
-                                  height: 16.h,
-                                ),
-                                Text(
-                                  "business_name".tr,
-                                  style: fontSizeAuth,
-                                ),
-                                SizedBox(
-                                  height: 4.h,
-                                ),
-                                TextFormField(
-                                  onChanged: (value) {
-                                    profile.businessName = profile.businessNameController.text;
-                                    (context as Element).markNeedsBuild();
-                                  },
-                                  controller: profile.businessNameController
-                                    ..text = profile.businessName
-                                    ..selection = TextSelection.collapsed(
-                                        offset: profile.businessNameController.text.length),
-                                  decoration: InputDecoration(
-                                    errorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8.r),
-                                      borderSide: const BorderSide(
-                                        width: 1,
-                                        color: kMainColor,
-                                      ),
-                                    ),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8.r),
-                                      borderSide: const BorderSide(
-                                        width: 1,
-                                        color: kMainColor,
-                                      ),
-                                    ),
-                                    fillColor: Colors.red,
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(Radius.circular(8.r)),
-                                      borderSide: BorderSide(
-                                          color: kMainColor, width: 1.w),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(Radius.circular(8.r)),
-                                      borderSide: BorderSide(
-                                          width: 1.w, color: dividerColor),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 16.h,
-                                ),
-                                Text(
-                                  "address".tr,
-                                  style: fontSizeAuth,
-                                ),
-                                SizedBox(
-                                  height: 4.h,
-                                ),
-                                TextFormField(
-                                  onChanged: (value) {
-                                    profile.address = profile.addressController.text;
-                                    (context as Element).markNeedsBuild();
-                                  },
-                                  controller: profile.addressController
-                                    ..text = profile.address
-                                    ..selection = TextSelection.collapsed(
-                                        offset: profile.addressController.text.length),
-                                  decoration: InputDecoration(
-                                    errorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8.r),
-                                      borderSide: const BorderSide(
-                                        width: 1,
-                                        color: kMainColor,
-                                      ),
-                                    ),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8.r),
-                                      borderSide: const BorderSide(
-                                        width: 1,
-                                        color: kMainColor,
-                                      ),
-                                    ),
-                                    fillColor: Colors.red,
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(Radius.circular(8.r)),
-                                      borderSide: BorderSide(
-                                          color: kMainColor, width: 1.w),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(Radius.circular(8.r)),
-                                      borderSide: BorderSide(
-                                          width: 1.w, color: dividerColor),
-                                    ),
-                                  ),
-                                ),*/
                                 SizedBox(height: 24.h,),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,

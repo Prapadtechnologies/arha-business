@@ -1,12 +1,11 @@
+import 'dart:ffi';
+
 class ParcelCrateModel {
-  ParcelCrateModel({
-      bool? success, 
-      String? message, 
-      Data? data,}){
+  ParcelCrateModel({bool? success, String? message, Data? data,}){
     _success = success;
     _message = message;
     _data = data;
-}
+  }
 
   ParcelCrateModel.fromJson(dynamic json) {
     _success = json['success'];
@@ -34,29 +33,29 @@ class ParcelCrateModel {
 }
 
 class Data {
-  Data({
-      MerchantData? merchant,
-      List<Shops>? shops, 
-      List<DeliveryCharges>? deliveryCharges, 
-      List<CodCharges>? codCharges,
-      List<Packagings>? packagings, 
-      String? fragileLiquid, 
-      List<DeliveryTypes>? deliveryTypes,}){
+  Data({MerchantData? merchant,
+    //    List<Shops>? shops,
+    List<DeliveryCharges>? deliveryCharges,
+
+    List<CodCharges>? codCharges,
+    List<Packagings>? packagings,
+    String? fragileLiquid,
+    List<DeliveryTypes>? deliveryTypes,}){
     _merchant = merchant;
-    _shops = shops;
+    //  _shops = shops;
     _deliveryCharges = deliveryCharges;
     _codCharges = codCharges;
     _packagings = packagings;
     _fragileLiquid = fragileLiquid;
     _deliveryTypes = deliveryTypes;
-}
+  }
 
   Data.fromJson(dynamic json) {
     _merchant = json['merchant'] != null ? MerchantData.fromJson(json['merchant']) : null;
     if (json['shops'] != null) {
-      _shops = [];
+      //  _shops = [];
       json['shops'].forEach((v) {
-        _shops?.add(Shops.fromJson(v));
+        // _shops?.add(Shops.fromJson(v));
       });
     }
     if (json['deliveryCharges'] != null && json['deliveryCharges'].length !=0 ) {
@@ -65,7 +64,7 @@ class Data {
       json['deliveryCharges'].forEach((v) {
         print('object');
         print(v);
-          _deliveryCharges?.add(DeliveryCharges.fromJson(v));
+        _deliveryCharges?.add(DeliveryCharges.fromJson(v));
       });
     }
     if (json['codCharges'] != null) {
@@ -89,7 +88,7 @@ class Data {
     }
   }
   MerchantData? _merchant;
-  List<Shops>? _shops;
+  // List<Shops>? _shops;
   List<DeliveryCharges>? _deliveryCharges;
   List<CodCharges>? _codCharges;
   List<Packagings>? _packagings;
@@ -97,7 +96,7 @@ class Data {
   List<DeliveryTypes>? _deliveryTypes;
 
   MerchantData? get merchant => _merchant;
-  List<Shops>? get shops => _shops;
+  // List<Shops>? get shops => _shops;
   List<DeliveryCharges>? get deliveryCharges => _deliveryCharges;
   List<CodCharges>? get codCharges => _codCharges;
   List<Packagings>? get packagings => _packagings;
@@ -109,12 +108,13 @@ class Data {
     if (_merchant != null) {
       map['merchant'] = _merchant?.toJson();
     }
-    if (_shops != null) {
+    /* if (_shops != null) {
       map['shops'] = _shops?.map((v) => v.toJson()).toList();
-    }
+    }*/
     if (_deliveryCharges != null) {
       map['deliveryCharges'] = _deliveryCharges?.map((v) => v.toJson()).toList();
     }
+
     if (_codCharges != null) {
       map['codCharges'] = _codCharges?.map((v) => v.toJson()).toList();
     }
@@ -132,13 +132,13 @@ class Data {
 
 class DeliveryTypes {
   DeliveryTypes({
-      int? id, 
-      String? key, 
-      String? value,}){
+    int? id,
+    String? key,
+    String? value,}){
     _id = id;
     _key = key;
     _value = value;
-}
+  }
 
   DeliveryTypes.fromJson(dynamic json) {
     _id = json['id'];
@@ -165,13 +165,13 @@ class DeliveryTypes {
 
 class Packagings {
   Packagings({
-      int? id, 
-      String? name, 
-      String? price,}){
+    int? id,
+    String? name,
+    String? price,}){
     _id = id;
     _name = name;
     _price = price;
-}
+  }
 
   Packagings.fromJson(dynamic json) {
     _id = json['id'];
@@ -198,11 +198,11 @@ class Packagings {
 
 class CodChargesData {
   CodChargesData({
-      String? name, 
-      String? charge,}){
+    String? name,
+    String? charge,}){
     _name = name;
     _charge = charge;
-}
+  }
 
   CodChargesData.fromJson(dynamic json) {
     _name = json['name'];
@@ -225,18 +225,18 @@ class CodChargesData {
 
 class DeliveryCharges {
   DeliveryCharges({
-      int? id, 
-      String? merchantId, 
-      String? categoryId, 
-      String? deliveryChargeId, 
-      String? category, 
-      String? weight, 
-      String? sameDay, 
-      String? nextDay, 
-      String? subCity, 
-      String? outsideCity, 
-      String? status, 
-      String? statusName,}){
+    int? id,
+    String? merchantId,
+    String? categoryId,
+    String? deliveryChargeId,
+    int? category,
+    String? weight,
+    String? sameDay,
+    String? nextDay,
+    String? subCity,
+    String? outsideCity,
+    String? status,
+    String? statusName,}){
     _id = id;
     _merchantId = merchantId;
     _categoryId = categoryId;
@@ -249,7 +249,7 @@ class DeliveryCharges {
     _outsideCity = outsideCity;
     _status = status;
     _statusName = statusName;
-}
+  }
 
   DeliveryCharges.fromJson(dynamic json) {
     _id = json['id'];
@@ -269,7 +269,7 @@ class DeliveryCharges {
   String? _merchantId;
   String? _categoryId;
   String? _deliveryChargeId;
-  String? _category;
+  int? _category;
   String? _weight;
   String? _sameDay;
   String? _nextDay;
@@ -282,7 +282,7 @@ class DeliveryCharges {
   String? get merchantId => _merchantId;
   String? get categoryId => _categoryId;
   String? get deliveryChargeId => _deliveryChargeId;
-  String? get category => _category;
+  int? get category => _category;
   String? get weight => _weight;
   String? get sameDay => _sameDay;
   String? get nextDay => _nextDay;
@@ -310,13 +310,14 @@ class DeliveryCharges {
 
 }
 
+/*
 class Shops {
   Shops({
-      int? id, 
-      String? merchantId, 
-      String? name, 
-      String? contactNo, 
-      String? address, 
+      int? id,
+      String? merchantId,
+      String? name,
+      String? contactNo,
+      String? address,
       String? merchantLat,
       String? merchantLong,
       String? status,
@@ -378,19 +379,20 @@ class Shops {
   }
 
 }
+*/
 
 class MerchantData {
   MerchantData({
-      int? id, 
-      String? userId, 
-      String? businessName, 
-      String? merchantUniqueId, 
-      String? currentBalance, 
-      String? openingBalance, 
-      String? vat,
+    int? id,
+    String? userId,
+    String? businessName,
+    String? merchantUniqueId,
+    String? currentBalance,
+    String? openingBalance,
+    String? vat,
     CodCharges? codCharges,
-      String? status, 
-      String? address,}){
+    String? status,
+    String? address,}){
     _id = id;
     _userId = userId;
     _businessName = businessName;
@@ -401,7 +403,7 @@ class MerchantData {
     _codCharges = codCharges;
     _status = status;
     _address = address;
-}
+  }
 
   MerchantData.fromJson(dynamic json) {
     _id = json['id'];
@@ -458,13 +460,13 @@ class MerchantData {
 
 class CodCharges {
   CodCharges({
-      String? insideCity, 
-      String? subCity, 
-      String? outsideCity,}){
+    String? insideCity,
+    String? subCity,
+    String? outsideCity,}){
     _insideCity = insideCity;
     _subCity = subCity;
     _outsideCity = outsideCity;
-}
+  }
 
   CodCharges.fromJson(dynamic json) {
     _insideCity = json['inside_city'];

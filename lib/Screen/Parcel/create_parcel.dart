@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:geolocator/geolocator.dart';
 import 'package:we_courier_merchant_app/utils/image.dart';
 import '../../MapAddress/flutter_google_places_web.dart';
 import '../../Services/api-list.dart';
@@ -10,6 +13,8 @@ import '../../Models/parcel_crate_model.dart';
 import '../../utils/size_config.dart';
 import '../Widgets/constant.dart';
 import '../Widgets/loader.dart';
+import 'dart:math';
+
 
 class CreateParcel extends StatefulWidget {
 
@@ -45,12 +50,21 @@ class _CreateParcelState extends State<CreateParcel> {
   String? userID;
   String? Phone;
 
+  double? cToseepickupLat;
+  double? cToseepickupLong;
+
+
   // Initial Selected Value  for gst dropdown
   String dropdownvalue = 'GST';
 
   // List of items in our dropdown menu  for gst dropdown
   var items = ['GST', 'SGST', 'No GST',];
   bool _showTextFields = true;
+  late double distance;
+
+
+  int _counter = 1;
+  String CategoryID = '';
 
 /*  DropdownButton<String> selectType() {
     List<DropdownMenuItem<String>> dropDownItems = [];
@@ -89,8 +103,60 @@ class _CreateParcelState extends State<CreateParcel> {
     FromseedeliveryLong= prefs.getString('fromLongi');
     userID = prefs.getString('user-id');
     Phone =  prefs.getString("phone");
-    print("Phone ==> ${Phone}");
 
+    print("Current ==> ${ToseepickupLat}, ${ToseepickupLong}");
+    print("From ==> ${FromseedeliveryLat}, ${FromseedeliveryLong}");
+
+
+    Location start = Location(double.parse(ToseepickupLat!), double.parse(ToseepickupLong!)); // Example New York City
+    Location end = Location(double.parse(FromseedeliveryLat!), double.parse(FromseedeliveryLong!));
+
+    distance = calculateNewDistance(start, end);
+    print('Distance between New York City and Los Angeles: $distance km');
+
+    cToseepickupLat = double.parse(ToseepickupLat!);
+    cToseepickupLong = double.parse(ToseepickupLong!);
+
+
+
+  }
+
+  double calculateNewDistance(Location start, Location end) {
+    const double earthRadius = 6371; // Radius of the earth in kilometers
+
+    // Convert latitude and longitude from degrees to radians
+    double startLatRadians = NewdegreesToRadians(start.latitude);
+    double endLatRadians = NewdegreesToRadians(end.latitude);
+    double deltaLatRadians = NewdegreesToRadians(end.latitude - start.latitude);
+    double deltaLonRadians = NewdegreesToRadians(end.longitude - start.longitude);
+
+    // Haversine formula
+    double a = sin(deltaLatRadians / 2) * sin(deltaLatRadians / 2) +
+        cos(startLatRadians) *
+            cos(endLatRadians) *
+            sin(deltaLonRadians / 2) *
+            sin(deltaLonRadians / 2);
+    double c = 2 * atan2(sqrt(a), sqrt(1 - a));
+
+    // Distance in kilometers
+    double distance = earthRadius * c;
+    return distance;
+  }
+
+  double NewdegreesToRadians(double degrees) {
+    return degrees * pi / 180;
+  }
+
+  void _incrementCounter() {
+    setState(() {
+      _counter++;
+    });
+  }
+
+  void _decrementCounter() {
+    setState(() {
+      _counter--;
+    });
   }
 
   @override
@@ -107,7 +173,6 @@ class _CreateParcelState extends State<CreateParcel> {
 
     return Scaffold(
         backgroundColor: kBgColor,
-
         appBar: AppBar(
           iconTheme: const IconThemeData(color: Colors.black),
           titleSpacing: 0,
@@ -115,7 +180,7 @@ class _CreateParcelState extends State<CreateParcel> {
           elevation: 0.0,
           title: Container(
             padding: EdgeInsets.only(bottom: 10,),
-            height: 100,width: 300,
+            height: 70,width: 300,
             child: Row(  mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(Images.appLogo, fit: BoxFit.cover),
@@ -133,7 +198,7 @@ class _CreateParcelState extends State<CreateParcel> {
                     SingleChildScrollView(
                       child: Column(
                         children: [
-                          const SizedBox(height: 30.0),
+                          const SizedBox(height: 20.0),
                           Container(
                             padding: const EdgeInsets.all(10.0),
                             width: MediaQuery.of(context).size.width,
@@ -157,7 +222,8 @@ class _CreateParcelState extends State<CreateParcel> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const SizedBox(height: 20.0),
+                                    const SizedBox(height: 5),
+
                                     //  parcel.shopList.isEmpty?SizedBox():
                                     /*SizedBox(
                                       height: 60.0,
@@ -205,7 +271,6 @@ class _CreateParcelState extends State<CreateParcel> {
                                         },
                                       ),
                                     ),*/
-                                    const SizedBox(height: 20.0),
                                     AppTextField(
                                       onChanged: (value) {
                                         setState(() {
@@ -227,11 +292,8 @@ class _CreateParcelState extends State<CreateParcel> {
                                       cursorColor: kTitleColor,
                                       textFieldType: TextFieldType.PHONE,
                                       decoration: kInputDecoration.copyWith(
-                                        enabledBorder: const OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(Radius.circular(2.0)),
-                                          borderSide:
-                                          BorderSide(color: kBorderColorTextField, width: 2),
-                                        ),
+                                        enabledBorder: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(2.0)),
+                                          borderSide: BorderSide(color: kBorderColorTextField, width: 2),),
                                         labelText: 'Your phone'.tr,
                                         labelStyle: kTextStyle.copyWith(color: kTitleColor),
                                         hintText: '017XXXXXXXX',
@@ -271,8 +333,6 @@ class _CreateParcelState extends State<CreateParcel> {
                                         hintStyle: kTextStyle.copyWith(color: kGreyTextColor),
                                       ),
                                     ),
-
-                                    const SizedBox(height: 20,),
 
                                     /* const SizedBox(height: 20.0),
                   AppTextField(
@@ -334,10 +394,8 @@ class _CreateParcelState extends State<CreateParcel> {
                   ),*/
 
                                     const SizedBox(height: 20.0),
-                                    parcel.deliveryChargesList.isEmpty?SizedBox():   SizedBox(
-                                      height: 64.0,
-                                      child: FormField(
-                                        builder: (FormFieldState<dynamic> field) {
+                                    parcel.deliveryChargesList.isEmpty?SizedBox():   SizedBox(height: 64.0,
+                                      child: FormField(builder: (FormFieldState<dynamic> field) {
                                           return InputDecorator(
                                             decoration: kInputDecoration.copyWith(
                                               floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -356,7 +414,7 @@ class _CreateParcelState extends State<CreateParcel> {
                                                 items: parcel.deliveryChargesList.map((DeliveryCharges value) {
                                                   return new DropdownMenuItem<DeliveryCharges>(
                                                     value: value,
-                                                    child:/*value.id == 0 ?*/Text('${value.weight.toString()}'/*value.category.toString()): value.weight == '0'? Text(value.category.toString()): Text(value.category.toString() +' (${value.weight.toString()})'*/),
+                                                    child:/*value.id == 0 ?*/Text('${value.weight.toString()}')
 
                                                     //  child:value.id == 0 ?Text(value.category.toString()): value.weight == '0'? Text(value.category.toString()): Text(value.category.toString() +' (${value.weight.toString()})'),
                                                   );
@@ -366,6 +424,8 @@ class _CreateParcelState extends State<CreateParcel> {
                                                     parcel.deliveryChargesIndex = parcel.deliveryChargesList.indexOf(newValue!);
                                                     parcel.deliveryChargesID = newValue.id.toString();
                                                     parcel.deliveryChargesValue = newValue;
+                                                    CategoryID = parcel.deliveryChargesID.toString();
+
                                                   });
                                                 },
                                               ),
@@ -397,7 +457,54 @@ class _CreateParcelState extends State<CreateParcel> {
                     ),
                   ),*/
 
-                                    const SizedBox(height: 20.0),
+                                    const SizedBox(height: 10.0),
+
+                                    Text('Quantity'.tr,
+                                      style: kTextStyle.copyWith(
+                                          color: kTitleColor,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18.0),
+                                    ),
+
+                                    const SizedBox(height: 10.0),
+
+                                    Container(width: 400,
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(5),
+                                            color: Colors.white,
+                                            border: Border.all(color: Colors.black12)),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            FloatingActionButton(
+                                              elevation: 0.0,
+                                              backgroundColor: Colors.white,
+                                              onPressed: _decrementCounter,
+                                              tooltip: 'Decrement',
+                                              child: Icon(Icons.remove),
+                                            ),
+                                            const SizedBox(width: 120.0),
+
+                                            Text(/*'$_counter',*/ '${max(0, _counter)/*_counter < 0 ? 0 : _counter*/}',
+                                              style:kTextStyle.copyWith(
+                                                color: kTitleColor,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15.0),
+                                            ),
+                                            const SizedBox(width:120.0),
+
+                                            FloatingActionButton(
+                                              elevation: 0.0,
+                                              backgroundColor: Colors.white,
+                                              onPressed: _incrementCounter,
+                                              tooltip: 'Increment',
+                                              child: Icon(Icons.add),
+                                            ),
+                                          ],
+                                        ),
+                                    ),
+
+                                    const SizedBox(height: 15.0),
 
                                     Container(height: 60,width: 400,
                                       padding: EdgeInsets.only(left: 10),
@@ -424,6 +531,7 @@ class _CreateParcelState extends State<CreateParcel> {
                                                 _showTextFields = false;
                                                 print("DropDownValue ==> ${dropdownvalue}");
                                               }
+
                                             });
                                           },
                                         ),
@@ -435,7 +543,7 @@ class _CreateParcelState extends State<CreateParcel> {
                                       TextFormField(
                                         controller: parcel.gstController,
                                         cursorColor: kTitleColor,
-                                        keyboardType: TextInputType.number,
+                                        keyboardType: TextInputType.text,
                                         decoration: kInputDecoration.copyWith(
                                           isDense: true,
                                           enabledBorder: const OutlineInputBorder(
@@ -526,6 +634,7 @@ class _CreateParcelState extends State<CreateParcel> {
                                     TextFormField(
                                       controller:parcel.pincodeController,
                                       cursorColor: kTitleColor,
+                                      keyboardType: TextInputType.number,
                                       textAlign: TextAlign.start,
                                       decoration: kInputDecoration.copyWith(
                                         labelText: 'Pin Code'.tr,
@@ -534,20 +643,7 @@ class _CreateParcelState extends State<CreateParcel> {
                                         contentPadding: const EdgeInsets.symmetric(
                                             vertical: 20, horizontal: 10.0),
                                       ),
-                                    ),
-
-                                    /*Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      FlutterGooglePlacesWeb(
-                        apiKey: APIList.mapGoogleApiKey!,
-                        required: true,
-                        controller: parcel.customerAddressController
-                      ),
-                    ],
-                  ),*/
-                                    const SizedBox(height: 20.0),
+                                    ), const SizedBox(height: 20.0),
                                     TextFormField(
                                       controller: parcel.noteController,
                                       cursorColor: kTitleColor,
@@ -567,51 +663,6 @@ class _CreateParcelState extends State<CreateParcel> {
                                           fontWeight: FontWeight.bold,
                                           fontSize: 18.0),
                                     ),
-                                    /*   Row(
-                                      children: [
-                                        Checkbox(
-                                          activeColor: kMainColor,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(2.0),
-                                          ),
-                                          value: parcel.isLiquidChecked,
-                                          onChanged: (val) {
-                                            setState(
-                                                  () {
-                                                parcel.isLiquidChecked = val!;
-                                              },
-                                            );
-                                          },
-                                        ),
-                                        Text(
-                                          'liquid_fragile'.tr,
-                                          style: kTextStyle.copyWith(color: kTitleColor),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        Checkbox(
-                                          activeColor: kMainColor,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(2.0),
-                                          ),
-                                          value: parcel.isParcelBankCheck,
-                                          onChanged: (val) {
-                                            setState(
-                                                  () {
-                                                parcel.isParcelBankCheck = val!;
-                                              },
-                                            );
-                                          },
-                                        ),
-                                        Text(
-                                          'is_it_parcel_bank'.tr+'?',
-                                          style: kTextStyle.copyWith(color: kTitleColor),
-                                        ),
-                                      ],
-                                    ),*/
-
 
                                     const SizedBox(height: 20.0),
                                     parcel.packagingList.isEmpty?SizedBox():  SizedBox(
@@ -649,6 +700,12 @@ class _CreateParcelState extends State<CreateParcel> {
                                                     parcel.packagingIndex = parcel.packagingList.indexOf(newValue!);
                                                     parcel.packagingID = newValue.id.toString();
                                                     parcel.packagingPrice = newValue.price.toString();
+                                                    print("Price ==> ${parcel.packagingPrice}");
+
+                                                    var  _packagingPrice = parcel.packagingPrice.toString();
+                                                    parcelController.getDistanceCharges(CategoryID,distance,dropdownvalue,_counter,DeliveryAddress,_packagingPrice );
+
+
 
                                                   });
                                                 },
@@ -669,10 +726,11 @@ class _CreateParcelState extends State<CreateParcel> {
                                             if (_formKey.currentState!.validate()) {
                                               if(parcel.deliveryChargesID != ''/* && parcel.deliveryTypID != ''*/){
                                                 /* parcel.customerAddressController.text = FlutterGooglePlacesWeb.value['name']??''*/;
-                                                parcel.customerAddressLatController.text  = FromseedeliveryLat.toString()/*FlutterGooglePlacesWeb.value['lat']??''*/;
-                                                parcel.customerAddressLongController.text= FromseedeliveryLong.toString()/*FlutterGooglePlacesWeb.value['long']??''*/;
+                                                parcel.customerAddressLatController.text  = FromseedeliveryLat!/*FlutterGooglePlacesWeb.value['lat']??''*/;
+                                                parcel.customerAddressLongController.text= FromseedeliveryLong!/*FlutterGooglePlacesWeb.value['long']??''*/;
 
-                                                parcel.calculateTotal(context,PickupAddress,DeliveryAddress,dropdownvalue,userID!);
+                                                parcel.calculateTotal(context,PickupAddress,DeliveryAddress,dropdownvalue,userID!,distance,_counter,FromseedeliveryLat,FromseedeliveryLong
+                                                );
                                               }else if(parcel.deliveryChargesID == ''){
                                                 Get.rawSnackbar(
                                                     message: "Please select category",
@@ -713,9 +771,12 @@ class _CreateParcelState extends State<CreateParcel> {
         ));
   }
 
-/* @override
-  void dispose() {
-    _gstController.dispose();
-    super.dispose();
-  }*/
+}
+
+class Location {
+  final double latitude;
+  final double longitude;
+
+  Location(this.latitude, this.longitude);
+
 }

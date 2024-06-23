@@ -27,7 +27,7 @@ class ChangePasswordView extends GetView {
         elevation: 0.0,
         title: Container(
           padding: EdgeInsets.only(bottom: 10,),
-          height: 80,width: 300,
+          height: 70,width: 300,
           child: Row(  mainAxisAlignment: MainAxisAlignment.center,
             children: [
               IconButton(
